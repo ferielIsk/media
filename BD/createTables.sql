@@ -41,6 +41,7 @@ create table client(
 --Table pour les oeuvres
 create table oeuvre(
   ido int,
+  reference int not null,
   titre varchar2(100) not null,
   description clob not null,
   type varchar2(10) not null,
@@ -49,6 +50,7 @@ create table oeuvre(
   prixLocation int not null,
   dateParution date not null,
   primary key(ido),
+  unique (reference),
   check (type in ('Livre', 'CD', 'DVD'))
 );
 
