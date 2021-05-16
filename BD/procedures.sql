@@ -32,20 +32,16 @@ is
     from penalite;
   cursor cCompte is
     select adresseMail
-    from compte;
+    from compte
+    where adresseMail!=l_adresseMail;
   l_adresseMailGest compte.adresseMail%type;
   l_idp penalite.idp%type;
   l_ido oeuvre.ido%type;
   l_ide emprunt.ide%type;
   l_adresseMailCompte compte.adresseMail%type;
 begin
-    insert into compte values (l_adresse, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, le_type);
-    open c;
-    fetch c into l_adresseMailGest;
-    while c%found loop
-      insert into compteGestionnaire values (l_adresseMail, l_adresseMailGest);
-      fetch c into l_adresseMailGest;
-    end loop;
+    insert into compte values (l_adresseMail, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, le_type);
+
     if le_type = 'Gestionnaire_oeuvre' then
       open cOeuvre;
       fetch cOeuvre into l_ido;
@@ -72,6 +68,7 @@ begin
           open cCompte;
           fetch cCompte into l_adresseMailCompte;
           while cCompte%found loop
+            dbms_output.put_line(' ______________ici________'||l_adresseMailCompte|| '  '|| l_adresseMail);
             insert into compteGestionnaire values (l_adresseMailCompte, l_adresseMail);
             fetch cCompte into l_adresseMailCompte;
           end loop;
@@ -79,6 +76,12 @@ begin
         end if;
       end if;
     end if;
+    open c;
+    fetch c into l_adresseMailGest;
+    while c%found loop
+      insert into compteGestionnaire values (l_adresseMail, l_adresseMailGest);
+      fetch c into l_adresseMailGest;
+    end loop;
     close c;
 end;
 /
@@ -177,6 +180,7 @@ begin
 
     insert into editionOeuvre values (le_nomEdition, l_oeuvre);
     insert into createurOeuvre values (le_nomCreateur, la_profession, l_oeuvre);
+    fetch c3 into l_adresseMailGest;
     while c3%found loop
         insert into oeuvreGestionnaire values (l_oeuvre, l_adresseMailGest);
         fetch c3 into l_adresseMailGest;
