@@ -68,7 +68,6 @@ begin
           open cCompte;
           fetch cCompte into l_adresseMailCompte;
           while cCompte%found loop
-            dbms_output.put_line(' ______________ici________'||l_adresseMailCompte|| '  '|| l_adresseMail);
             insert into compteGestionnaire values (l_adresseMailCompte, l_adresseMail);
             fetch cCompte into l_adresseMailCompte;
           end loop;
