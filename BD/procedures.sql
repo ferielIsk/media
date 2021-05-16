@@ -124,6 +124,7 @@ end;
 -- Ajoute Oeuvre à  la BD
 
 create or replace procedure ajouteOeuvre(
+    la_reference oeuvre.reference%type,
     le_titre oeuvre.titre%type,
     la_description oeuvre.description%type,
     le_type oeuvre.type%type,
@@ -152,7 +153,7 @@ is
   cursor cOeuvre is
     select ido
     from oeuvre
-    where titre = le_titre;
+    where reference = la_reference;
   l_adresseMailGest compte.adresseMail%type;
   l_oeuvre oeuvre.ido%type;
   le_createur c1%rowtype;
@@ -171,7 +172,7 @@ begin
     end if;
     if cOeuvre%notfound then
       l_oeuvre := seq_oeuvre.nextval;
-      insert into oeuvre values (l_oeuvre, le_titre, la_description, le_type, le_nbExemplaires, le_prixAchat, le_prixLocation, la_dateParution);
+      insert into oeuvre values (l_oeuvre, la_reference, le_titre, la_description, le_type, le_nbExemplaires, le_prixAchat, le_prixLocation, la_dateParution);
     end if;
 
     insert into editionOeuvre values (le_nomEdition, l_oeuvre);
