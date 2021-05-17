@@ -12,7 +12,7 @@ create or replace procedure ajouteCompte(
     le_prenom compte.prenom%type,
     l_adresse compte.adresse%type,
     le_tel compte.tel%type,
-    la_dateDeNaissance compte.nom%type,
+    la_dateDeNaissance compte.dateDeNaissance%type,
     le_mdp compte.mdp%type,
     le_type compte.type%type
    )
@@ -404,13 +404,12 @@ create or replace procedure ajouteClient(
     le_prenom compte.prenom%type,
     l_adresse compte.adresse%type,
     le_tel compte.tel%type,
-    la_dateDeNaissance compte.nom%type,
+    la_dateDeNaissance compte.dateDeNaissance%type,
     le_mdp compte.mdp%type,
-    le_pseudo client.pseudo%type,
-    l_etat client.etat%type)
+    le_pseudo client.pseudo%type)
 is
 begin
-    ajouteCompte(l_adresse, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, 'Client');
+    ajouteCompte(l_adresseMail, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, 'Client');
     insert into client values ('En_cours_de_validation', le_pseudo, l_adresseMail, 0);
 end;
 /
@@ -586,3 +585,4 @@ begin
         and ido = l_ido;
 end;
 /
+
