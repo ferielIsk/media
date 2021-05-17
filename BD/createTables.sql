@@ -6,7 +6,7 @@ create table compte(
   adresse varchar2(100) not null,
   tel varchar2(10) not null,
   dateDeNaissance date not null,
-  mdp varchar2(50) not null,
+  mdp varchar2(200) not null,
   type varchar2(20) not null,
   primary key(adresseMail),
   check (type in ('Client', 'Gestionnaire_compte', 'Gestionnaire_oeuvre', 'Bibliothecaire' ))
