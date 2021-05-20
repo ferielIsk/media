@@ -9,7 +9,7 @@ create table compte(
   mdp varchar2(200) not null,
   type varchar2(20) not null,
   primary key(adresseMail),
-  check (type in ('Client', 'Gestionnaire_compte', 'Gestionnaire_oeuvre', 'Bibliothecaire' ))
+  check (type in ('Client', 'Account_manager', 'Multimedia_manager', 'Librarian' ))
 );
 
 
@@ -31,7 +31,7 @@ create table client(
   nbOeuvresEmpruntees int default 0,
   primary key (pseudo),
   foreign key(adresseMail) references compte(adresseMail),
-  check (etat in ('En_cours_de_validation', 'Actif', 'Suspendu', 'Demande_de_suppression')),
+  check (etat in ('In_validation_process', 'Activated', 'Suspended', 'Asked_tobe_deleted')),
   check (nbOeuvresEmpruntees<=5 and nbOeuvresEmpruntees>=0)
 );
 
@@ -49,9 +49,10 @@ create table oeuvre(
   prixAchat int not null,
   prixLocation int not null,
   dateParution date not null,
+  est_disponible int not null, check (est_disponible = 0 or est_disponible = 1),
   primary key(ido),
   unique (reference),
-  check (type in ('Livre', 'CD', 'DVD'))
+  check (type in ('Book', 'CD', 'DVD'))
 );
 
 --Table liaison entre oeuvre et gestionnaire des oeuvres
@@ -83,7 +84,7 @@ create table createur(
   nom varchar2(50),
   profession varchar2(50),
   primary key (nom, profession),
-  check (profession in ('Compositeur', 'Auteur', 'Producteur'))
+  check (profession in ('Composer', 'Author', 'Producer'))
 );
 create table createurOeuvre(
   nom varchar2(50),
@@ -152,4 +153,3 @@ create table penaliteBibliothecaire(
   foreign key(idp) references penalite(idp)
 );
 create sequence seq_penalite start with 100000;
-

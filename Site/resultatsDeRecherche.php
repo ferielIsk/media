@@ -42,7 +42,7 @@
 
 
 		//connexion à la BD
-   		$connexion = oci_connect('c##fiskoun_a', 'fiskoun_a', 'dbinfo', 'AL32UTF8');
+		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
    		$texte = "select distinct reference,titre , type, prixLocation "
                       ." from oeuvre o, createur c, edition e"

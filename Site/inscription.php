@@ -24,7 +24,7 @@
 				</form>
 		<! -- Fin Barre principale -->
 		<?php
-			//Si deja connectée redirige vers le compte 
+			//Si deja connectée redirige vers le compte
 			if (!empty($_SESSION['started']) and $_SESSION['started'] == true)
 				header("Location: monCompte.php");
 		?>
@@ -109,13 +109,13 @@
 					."TO_DATE('".$dateDeNaissance."','yyyy-mm-dd'),'".$hashedMdP."','". $pseudo."') ; end;";
 
 
-			$ordre = ociparse($connexion, $texte);
+			$ordre = oci_parse($connexion, $texte);
 			ociexecute($ordre);
-			ocilogoff($connexion);
+			oci_free_statement($ordre);
+			oci_close($connexion);
 			header("Location: monCompte.php");
 		}
 
 	}
 
 	?>
-

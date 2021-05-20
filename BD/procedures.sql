@@ -20,7 +20,7 @@ is
   cursor c is
     select adresseMail
     from compte
-    where type = 'Gestionnaire_compte';
+    where type = 'Account_manager';
   cursor cOeuvre is
   	select ido
   	from oeuvre;
@@ -42,7 +42,7 @@ is
 begin
     insert into compte values (l_adresseMail, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, le_type);
 
-    if le_type = 'Gestionnaire_oeuvre' then
+    if le_type = 'Multimedia_manager' then
       open cOeuvre;
       fetch cOeuvre into l_ido;
       while cOeuvre%found loop
@@ -51,7 +51,7 @@ begin
       end loop;
       close cOeuvre;
     else
-      if le_type = 'Bibliothecaire' then
+      if le_type = 'Librarian' then
         open cEmprunt; open cPenalite;
         fetch cEmprunt into l_ide; fetch cPenalite into l_idp;
         while cEmprunt%found loop
@@ -64,7 +64,7 @@ begin
         end loop;
         close cEmprunt; close cPenalite;
       else
-        if le_type = 'Gestionnaire_compte' then
+        if le_type = 'Account_manager' then
           open cCompte;
           fetch cCompte into l_adresseMailCompte;
           while cCompte%found loop
@@ -151,7 +151,7 @@ is
   cursor c3 is
     select adresseMail
     from compte
-    where type = 'Gestionnaire_oeuvre';
+    where type = 'Multimedia_manager';
   cursor cOeuvre is
     select ido
     from oeuvre
@@ -174,7 +174,7 @@ begin
     end if;
     if cOeuvre%notfound then
       l_oeuvre := seq_oeuvre.nextval;
-      insert into oeuvre values (l_oeuvre, la_reference, le_titre, la_description, le_type, le_nbExemplaires, le_prixAchat, le_prixLocation, la_dateParution);
+      insert into oeuvre values (l_oeuvre, la_reference, le_titre, la_description, le_type, le_nbExemplaires, le_prixAchat, le_prixLocation, la_dateParution, 1);
     end if;
 
     insert into editionOeuvre values (le_nomEdition, l_oeuvre);
@@ -194,11 +194,11 @@ end;
 
 
 
---          bibliothecaire
+--          Bibliothecaire
 
 
 
---Le bibliothecaire confirme un emprunt (le client est bien venu recuperer les oeuvres de son panier)
+--Le Bibliothecaire confirme un emprunt (le client est bien venu recuperer les oeuvres de son panier)
 create or replace procedure confirmeEmprunt(
     le_pseudo client.pseudo%type,
     l_ide emprunt.ide%type)
@@ -348,10 +348,10 @@ is
           and emprunt.ide = panier.ide
           and sysdate>(dateDebutEmprunt + 15)
           and rendue = 0;
-    cursor cBibliothecaire is
+    cursor cLibrarian is
       select adresseMail
       from compte
-      where type = 'Bibliothecaire';
+      where type = 'Librarian';
     l_emprunt cEmprunt%rowtype;
     l_idp penalite.idp%type;
     l_adresseMailBib compte.adresseMail%type;
@@ -379,10 +379,10 @@ begin
       end if;
 
       -- On ajoute la penalite aux biblothecaires
-      fetch cBibliothecaire into l_adresseMailBib;
-      while cBibliothecaire%found loop
+      fetch cLibrarian into l_adresseMailBib;
+      while cLibrarian%found loop
         insert into penaliteBibliothecaire values (l_idp, l_adresseMailBib);
-        fetch cBibliothecaire into l_adresseMailBib;
+        fetch cLibrarian into l_adresseMailBib;
       end loop;
       fetch cEmprunt into l_emprunt;
     end loop;
@@ -410,7 +410,7 @@ create or replace procedure ajouteClient(
 is
 begin
     ajouteCompte(l_adresseMail, le_nom, le_prenom, l_adresse, le_tel, la_dateDeNaissance, le_mdp, 'Client');
-    insert into client values ('En_cours_de_validation', le_pseudo, l_adresseMail, 0);
+    insert into client values ('In_validation_process', le_pseudo, l_adresseMail, 0);
 end;
 /
 
@@ -451,11 +451,11 @@ is
       from client
       where pseudo = le_pseudo;
     cursor c2 is
-      select nbExemplaires
+      select nbExemplaires, est_disponible
       from oeuvre
       where ido = l_ido;
-    cursor c3 is 
-      select idcClient 
+    cursor c3 is
+      select idcClient
       from panier, emprunt
       where emprunt.ide = panier.ide
       	and emprunt.idcClient = le_pseudo
@@ -465,14 +465,15 @@ is
     le_nbExemplaires oeuvre.nbExemplaires%type;
     l_ide emprunt.ide%type;
     l_oeuvre c3%rowtype;
+    dispo oeuvre.est_disponible%type;
 begin
     open c1; open c2; open c3;
     fetch c1 into le_nbOeuvresEmpruntees;
-    fetch c2 into le_nbExemplaires;
+    fetch c2 into le_nbExemplaires, dispo;
     fetch c3 into l_oeuvre;
-    if c3%notfound then 
+    if c3%notfound then
 		if c1%found and c2%found then
-		  if le_nbOeuvresEmpruntees<5 then
+		  if le_nbOeuvresEmpruntees<5 and dispo = 1 then
 		    if le_nbExemplaires>0 then
 		      l_ide := panierEnCours(le_pseudo);
 		      if l_ide=-1 then  --Si il n'existe pas de panier/emprunt qu'on n'a pas encore validé
@@ -488,7 +489,7 @@ begin
 		    le_message:='Panier plein : Depassement limite emprunts';
 		  end if;
 		end if;
-	else 
+	else
 		le_message:='Oeuvre deja presente dans panier !';
 	end if;
     close c1; close c2; close c3;
@@ -510,10 +511,10 @@ is
       where ide = l_ide
         and oeuvre.ido = panier.ido;
 
-    cursor cBibliothecaire is
+    cursor cLibrarian is
       select adresseMail
       from compte
-      where type = 'Bibliothecaire';
+      where type = 'Librarian';
 
     l_ido oeuvre.ido%type;
     le_prix oeuvre.prixLocation%type;
@@ -553,13 +554,13 @@ begin
       update emprunt
         set valide = 1, montant = le_montant, dateReservation=sysdate
         where ide=l_ide;
-      open cBibliothecaire;
-      fetch cBibliothecaire into l_adresseMailBib;
-      while cBibliothecaire%found loop
+      open cLibrarian;
+      fetch cLibrarian into l_adresseMailBib;
+      while cLibrarian%found loop
         insert into empruntBibliothecaire values (l_ide, l_adresseMailBib);
-        fetch cBibliothecaire into l_adresseMailBib;
+        fetch cLibrarian into l_adresseMailBib;
       end loop;
-      close cBibliothecaire;
+      close cLibrarian;
 
       --met a jour le nb d'exemplaires
       while cOeuvresPanier%found loop
@@ -608,16 +609,17 @@ create or replace function fdisponibilite(
 is
  le_nombre oeuvre.nbExemplaires%type;
  la_disponibilite varchar2(2000);
+ dispo oeuvre.est_disponible%type;
   begin
-    select nbExemplaires 
-    into le_nombre
+    select nbExemplaires, est_disponible
+    into le_nombre, dispo
     from oeuvre
     where reference= la_reference;
 
-    if le_nombre >0
-      then la_disponibilite :='Disponible';
+    if le_nombre>0 and dispo = 1
+      then la_disponibilite :='Available';
     else
-      la_disponibilite :='Non-Disponible';
+      la_disponibilite :='Unavailable';
     end if;
 return la_disponibilite;
 end;
