@@ -454,31 +454,44 @@ is
       select nbExemplaires
       from oeuvre
       where ido = l_ido;
+    cursor c3 is 
+      select idcClient 
+      from panier, emprunt
+      where emprunt.ide = panier.ide
+      	and emprunt.idcClient = le_pseudo
+      	and panier.ido = l_ido
+      	and valide = 0;
     le_nbOeuvresEmpruntees client.nbOeuvresEmpruntees%type;
     le_nbExemplaires oeuvre.nbExemplaires%type;
     l_ide emprunt.ide%type;
+    l_oeuvre c3%rowtype;
 begin
-    open c1; open c2;
+    open c1; open c2; open c3;
     fetch c1 into le_nbOeuvresEmpruntees;
     fetch c2 into le_nbExemplaires;
-    if c1%found and c2%found then
-      if le_nbOeuvresEmpruntees<5 then
-        if le_nbExemplaires>0 then
-          l_ide := panierEnCours(le_pseudo);
-          if l_ide=-1 then  --Si il n'existe pas de panier/emprunt qu'on n'a pas encore validé
-            l_ide:=seq_emprunt.nextval;
-            insert into emprunt(ide, idcClient) values (l_ide, le_pseudo);
-          end if;
-          insert into panier values(l_ido, l_ide, 0);
-          le_message := 'Ajout réussi';
-        else
-          le_message:='Oeuvre non disponible';
-        end if;
-      else
-        le_message:='Panier plein : Dépassement limite emprunts';
-      end if;
-    end if;
-    close c1; close c2;
+    fetch c3 into l_oeuvre;
+    if c3%notfound then 
+		if c1%found and c2%found then
+		  if le_nbOeuvresEmpruntees<5 then
+		    if le_nbExemplaires>0 then
+		      l_ide := panierEnCours(le_pseudo);
+		      if l_ide=-1 then  --Si il n'existe pas de panier/emprunt qu'on n'a pas encore validé
+		        l_ide:=seq_emprunt.nextval;
+		        insert into emprunt(ide, idcClient) values (l_ide, le_pseudo);
+		      end if;
+		      insert into panier values(l_ido, l_ide, 0);
+		      le_message := 'Ok';
+		    else
+		      le_message:='Oeuvre non disponible';
+		    end if;
+		  else
+		    le_message:='Panier plein : Depassement limite emprunts';
+		  end if;
+		end if;
+	else 
+		le_message:='Oeuvre deja presente dans panier !';
+	end if;
+    close c1; close c2; close c3;
 end;
 /
 
@@ -583,6 +596,30 @@ begin
     delete panier
       where ide = l_ide
         and ido = l_ido;
+end;
+/
+
+
+--Teste disponibilite oeuvre
+
+create or replace function fdisponibilite(
+    la_reference oeuvre.reference%type)
+    return varchar2
+is
+ le_nombre oeuvre.nbExemplaires%type;
+ la_disponibilite varchar2(2000);
+  begin
+    select nbExemplaires 
+    into le_nombre
+    from oeuvre
+    where reference= la_reference;
+
+    if le_nombre >0
+      then la_disponibilite :='Disponible';
+    else
+      la_disponibilite :='Non-Disponible';
+    end if;
+return la_disponibilite;
 end;
 /
 

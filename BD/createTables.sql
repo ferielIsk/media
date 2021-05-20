@@ -31,7 +31,7 @@ create table client(
   nbOeuvresEmpruntees int default 0,
   primary key (pseudo),
   foreign key(adresseMail) references compte(adresseMail),
-  check (etat in ('En_cours_de_validation', 'Actif', 'Suspendu')),
+  check (etat in ('En_cours_de_validation', 'Actif', 'Suspendu', 'Demande_de_suppression')),
   check (nbOeuvresEmpruntees<=5 and nbOeuvresEmpruntees>=0)
 );
 
@@ -101,7 +101,7 @@ create table emprunt(
   ide int,
   valide int default 0 check (valide = 0 or valide = 1),
   dateReservation date,
-  dateDebutEmprunt date not null,
+  dateDebutEmprunt date,
   idcClient varchar2(25) not null,
   reglee int default 0 check (reglee = 0 or reglee = 1),
   montant int default 0,
@@ -152,3 +152,4 @@ create table penaliteBibliothecaire(
   foreign key(idp) references penalite(idp)
 );
 create sequence seq_penalite start with 100000;
+
