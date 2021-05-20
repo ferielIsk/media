@@ -1,0 +1,461 @@
+       		  /****************************************************************/
+            /*							Titres								*/
+            /****************************************************************/
+
+h1{
+	color: steelblue;
+	background-color: whitesmoke;
+	font-size:48px;
+}
+h2{
+	color: linen;
+	background-color: grey;
+}
+
+h3{
+	margin-left: 20px;
+	color : mediumseagreen;
+}
+
+
+            /****************************************************************/
+            /*					Barre menu horizontal						*/
+            /****************************************************************/
+            
+ul.barMenu {
+	list-style-type: none;
+	margin-left: 43%;
+	padding: 0;
+	overflow: hidden;
+	background-color: teal;
+}
+ul.barMenu > li {
+	float: left;
+}
+
+ul.barMenu > li a {
+	display: block;
+	color: mintcream;
+	text-align: center;
+	padding: 15px 50px;
+	text-decoration: none;
+}
+
+ul.barMenu > li a:hover {
+	background-color: turquoise;
+	color: #f1f1f1;
+}
+		            
+            /****************************************************************/
+            /*						Texte en general						*/
+            /****************************************************************/
+            
+.main {
+	margin-left: 220px;
+	text-align: justify; 
+}
+            /****************************************************************/
+            /*					HyperLien en general						*/
+            /****************************************************************/
+a {
+	color: teal;
+}
+            /****************************************************************/
+            /*				Tableaux des noms de protein ou gene			*/
+            /****************************************************************/
+
+
+
+
+/*******************************	Menu pour les comptes		*********************************/
+
+
+ 
+            /****************************************************************/
+            /*					Barre menu Vertical							*/
+            /****************************************************************/
+.sideMenu {
+	width: 15%;
+	background-color: silver;
+	top: 40vh;
+	left:3vh;	
+  	position:absolute;
+}
+
+
+.sideMenu a {
+
+	text-align: center;
+	padding: 8% 8% 8% 8%;
+	font-size: 20px;
+	text-decoration: none;
+	color: white;
+	display: block;
+}
+
+.sideMenu a:hover {
+	background-color: teal;
+  	color: white;
+}
+
+/*******************************	Page Index/Recherche avancée		*********************************/
+div.welcome{
+	text-align: center;
+	font-size:64px;
+	color: #005858;
+	margin-top: 15vh;
+}
+div.request{
+	margin-left: 20%;
+	font-size:22px;
+	color: #588ebb;
+	margin-top: 12vh;
+}
+
+
+            /****************************************************************/
+            /*				Affichage centré pour l'accueil					*/
+            /****************************************************************/
+div.formulaireCentre{
+	text-align:center;
+	margin-top: 3vh; /* hauteur */
+}
+		            
+            /****************************************************************/
+            /*					Barres de recherche							*/
+            /****************************************************************/
+
+input[type=text], input[type=email], input[type=password], input[type=date] {
+	width: 50%;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: white;
+	background-position: 10px 10px; 
+	background-repeat: no-repeat;
+	padding: 12px 20px 12px 40px;
+
+}
+
+            /****************************************************************/
+            /*					Boutons de soumission						*/
+            /****************************************************************/					            
+
+/*En general*/
+input[type=submit] {
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 200px;
+	height: 50px;
+	text-align: center;
+}
+
+input[type=submit]:hover {
+	background-color: teal;
+	color: white;
+}
+
+
+            /****************************************************************/
+            /*						Compte client							*/
+            /****************************************************************/	
+/*Bouton Suppression de compte*/
+input.suppression  {
+	transition-duration: 0.4s;
+	background-color: lightcoral;
+	color: white;
+	border-radius: 4px;
+	width: 400px;
+	height: 50px;
+	position:absolute; 
+	right:100vh;
+	bottom:-35px; 
+}
+
+input.suppression:hover {
+	background-color: crimson;
+	color: white;
+}
+
+/*se deconnecter*/
+#boutonSeDeco a{
+	position:absolute;   
+	right:12vh;
+	top:30vh;
+	font-weight: bold;
+	color: lightcoral;
+	text-decoration:none;
+	font-size: 20px;
+	
+	padding: 3 3 3 3;
+	border-style: outset;
+	border-color: lightcoral;
+	
+	background: alice blue;
+}
+#boutonSeDeco a:hover{
+	background-color: lightcoral;
+	color:white;
+}
+
+/*Bouton panier*/
+#boutonPanier a{
+	position:absolute;   
+	right:30vh;
+	top:30vh;
+	font-weight: bold;
+	color: #588ebb;
+	text-decoration:none;
+	font-size: 20px;
+	
+	padding: 3 3 3 3;
+	border-style: outset;
+	border-color: #32a1ce;
+	
+	background: alice blue;
+}
+
+#boutonPanier a:hover{
+	background: #32a1ce;
+	color:white;
+}
+
+/*Bouton modifier */
+input.modifier {
+	position:absolute;   
+	right:30vh;
+
+}
+/*Formulaire*/
+#formCompte{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+  top: 40vh;
+  position:absolute;
+
+} 
+
+.boutonsPanier{
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 200px;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:75vh; 
+	color: white;
+}
+.prix{
+	position:absolute; 
+	top:35vh;
+	font-size:22px;
+	color: #588ebb;
+}
+
+#BoutonFacture{
+	color:black;
+	height:50%;
+}
+           /****************************************************************/
+            /*						Compte personnel						*/
+            /****************************************************************/	
+            
+.bouton1  {
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:40vh; 
+}
+
+.bouton2  {
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:50vh; 
+}
+.bouton3  {
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:60vh; 
+}
+.bouton1:hover, .bouton2:hover, .bouton3:hover {
+	background-color: teal;
+	color: white;
+}
+            /****************************************************************/
+            /*					HyperLiens de recherche Avancee				*/
+            /****************************************************************/
+
+a.linkR  {
+	font-size: 20px;
+}
+/* mouse over link */
+a:hover.linkR {
+	color: black;
+}
+div.formulaireResearch{
+	margin-left: 10vh;
+}
+
+
+/************/
+
+div.inf{
+	border-left-width:1px;
+	margin-left:25%;
+	/*border-left-style: solid;*/	
+
+}
+
+input:disabled {
+  background: #E0E0E0;
+}
+
+
+label{
+	display: block;
+	width: 150px;
+	float: left;
+}
+
+
+
+#compteClient{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+  top: 40vh;
+  
+  position:absolute; 
+}
+
+
+#compteClient  td, #compteClient  th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#compteClient td.cellBtn{
+  padding: 0;
+}
+#compteClient tr{background-color: #f2f2f2;}
+
+
+
+#compteClient th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: teal;
+  color: white;
+}
+
+.btn {
+  background-color: #f2f2f2;
+  border: none;
+  color: darkgrey;
+  padding: 12px 16px;
+  font-size: 16px;
+  
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: Teal Blue;
+  color:white;
+  
+}
+.btnMinus {
+  background-color: #f2f2f2;
+  border: none;
+  color: red;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+.barMenu input[type=text] {
+	width: 24%;
+	margin-left: 13%;
+	top: 10px;
+	position:absolute;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: white;
+	background-position: 10px 10px; 
+	background-repeat: no-repeat;
+	padding: 12px 20px 12px 40px;
+
+}
+.boutonBarre {
+	margin-left: 38%;
+	background-color: #f2f2f2;
+	border: none;
+	color: darkgrey;
+	padding: 12px 16px;
+	font-size: 16px;
+  	top: 12px;
+	position:absolute;
+	cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.boutonBarre:hover {
+	background-color: Teal Blue;
+	color:white;
+
+}
+
+
+
+.btnOeuvre {
+  background-color: #f2f2f2;
+  border: none;
+  color: darkgrey;
+  padding: 10px 14px;
+  font-size: 16px;
+  margin-top:15px;
+  cursor: pointer;
+}
+
+.btnOeuvre a{
+	color:black;
+}
+/* Darker background on mouse-over */
+.btnOeuvre:hover, .btnOeuvre a:hover{
+  background-color: teal;
+  color:white;
+  
+}
+
