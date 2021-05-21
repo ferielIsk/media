@@ -9,13 +9,15 @@
     	    <! -- Début Barre principale -->
 
 				<ul class="barMenu">
-				  <li><a href="index.html">Home</a></li>
-				  <li><a href="advancedResearch.html">Advanced research</a></li>
-				  <li><a href="about.html">About</a></li>
+				  <li><a href="index.php">Home</a></li>
+				  <li><a href="advancedResearch.php">Advanced research</a></li>
+				  <li><a href="about.php">About</a></li>
 				  <?php
 				  	session_start(['cookie_lifetime' => 600]);
 				  	if(!empty($_SESSION['started']))
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
+				  	else 
+				  		echo '<li><a href="connexion.php">Connexion</a></li>';
 				  ?>
 				</ul>
 				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
@@ -27,6 +29,12 @@
 			//Si deja connectée redirige vers le compte
 			if (!empty($_SESSION['started']) and $_SESSION['started'] == true)
 				header("Location: monCompte.php");
+			if (!empty($_REQUEST['inscr'])){
+				if (empty($_REQUEST['inscr'])=="reussie")
+					echo '<div class="request" style="margin-top:5vh; margin-left:50%; font-size:32px; color: steelblue;"> Your request will be processed !  </div>';
+				else
+					echo '<div class="request" style="position:absolute; top:24vh; margin-left:40%; font-size:32px; color: crimson;"> User exists already !  </div>';
+			}
 		?>
 		<div class="welcome"> Welcome to Mediatech</div>
 		<div class="request" style="margin-top:10vh; margin-left:25%"> Please enter your information</div>
@@ -82,7 +90,7 @@
 		or empty($_POST['dateDeNaissance']) or empty($_POST['mail'])
 		or empty($_POST['numero']) or empty($_POST['motDepasse']) ){
 
-			echo "tous les champs doivent etre remplis!";
+			echo "All fields must be filled!";
 
 		}else{
 
@@ -101,19 +109,25 @@
 			//connexion à la BD
 			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
+			$txt = "select * from compte, client where compte.adresseMail='".$mail."' or pseudo='".$pseudo."'";
+			$ordreC = oci_parse($connexion, $txt);
+			oci_execute($ordreC);
+			if (($row = oci_fetch_array($ordreC, OCI_BOTH)) !=false){
+				header("Location: inscription.php?inscr=echec");
+			}else{
+				//Appel à la procédure ajouteClient
 
-			//Appel à la procédure ajouteClient
-
-			$texte = "begin ajouteClient('".$mail."', '".$nom."', '"
-					.$prenom."', '".$adresse."', '".$numero."', "
-					."TO_DATE('".$dateDeNaissance."','yyyy-mm-dd'),'".$hashedMdP."','". $pseudo."') ; end;";
+				$texte = "begin ajouteClient('".$mail."', '".$nom."', '"
+						.$prenom."', '".$adresse."', '".$numero."', "
+						."TO_DATE('".$dateDeNaissance."','yyyy-mm-dd'),'".$hashedMdP."','". $pseudo."') ; end;";
 
 
-			$ordre = oci_parse($connexion, $texte);
-			ociexecute($ordre);
-			oci_free_statement($ordre);
-			oci_close($connexion);
-			header("Location: monCompte.php");
+				$ordre = oci_parse($connexion, $texte);
+				ociexecute($ordre);
+				oci_free_statement($ordre);
+				oci_close($connexion);
+				header("Location: inscription.php?inscr=reussie");
+			}
 		}
 
 	}

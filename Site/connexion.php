@@ -7,13 +7,15 @@
     	    <! -- Début Barre principale -->
 
 				<ul class="barMenu">
-				  <li><a href="index.html">Home</a></li>
-				  <li><a href="advancedResearch.html">Advanced research</a></li>
-				  <li><a href="about.html">About</a></li>
+				  <li><a href="index.php">Home</a></li>
+				  <li><a href="advancedResearch.php">Advanced research</a></li>
+				  <li><a href="about.php">About</a></li>
 				  <?php
 				  	session_start(['cookie_lifetime' => 600]);
 				  	if(!empty($_SESSION['started']))
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
+				  	else 
+				  		echo '<li><a href="connexion.php">Connexion</a></li>';
 				  ?>
 				</ul>
 				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
@@ -37,13 +39,10 @@
         		//Si y'a eu une erreur recharger la page avec message
 				if (!empty ($_REQUEST['error']))
 					if ($_REQUEST['error']==1)
-						echo "Veuillez saisir vos informations ! ";
+						echo "Please enter your information.";
 					else
-						if($_REQUEST['error']==2)
-							echo "Utilisateur introuvable ! ";
-						else
-							if($_REQUEST['error']==3)
-								echo "Mot de passe incorrect ! ";
+						if($_REQUEST['error']==2 or $_REQUEST['error']==3 )
+							echo "Login or password incorrect.";
 			?>
 
 
@@ -60,19 +59,25 @@
             		//Si page de connexion simple on affiche un bouton pour pouvoir acceder à la version du personnel
             		if (empty ($_REQUEST['personnel']))
             			echo "<input type='submit' name='particulier' value='Particular'> </input>";
+            			
             		else
+            			
             			if ($_REQUEST['personnel']==true)
-							echo "<label style='position:absolute; left:26%' for='fonction'> Function :</label>"
+							echo "<label style='position:absolute; left:23%' for='fonction'> Function :</label><br><br>"
 								."<select id='fonction' name='fonction'>"
 									."<option value='Account_manager'>Account manager</option>"
 									."<option value='Multimedia_manager'>Multimedia manager</option>"
 									."<option value='Librarian'>Librarian</option>"
 								."</select></br></br></br>";
+								
             	?>
 
-
+				<?php 
+				if (!empty ($_REQUEST['personnel']))echo "<input type='submit' name='retour' value='Return'> </input>";
+				?>
             	<input type="submit" name="submit" value="Sign in"> </input>
         	</form>
+        	
         	<?php
         		if (empty ($_REQUEST['personnel']))
         			echo "<a class='linkR' href='inscription.php'>Don't have an account yet? Sign Up</a><br>";
@@ -87,6 +92,8 @@
 		if(isset($_REQUEST['particulier']) ){
 			header("Location: connexion.php?personnel=true");
 		}
+		if(isset($_REQUEST['retour']) )
+			header("Location: connexion.php");
 	}else{
 		$login = $_REQUEST['login'];
         $mdp = $_REQUEST['mdp'];
@@ -115,7 +122,7 @@
             }
 
 
-            echo $type;
+
 
 
 			$ordre = oci_parse($connexion, $txt);

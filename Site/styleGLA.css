@@ -17,6 +17,18 @@ h3{
 	color : mediumseagreen;
 }
 
+div.welcome{
+	text-align: center;
+	font-size:64px;
+	color: #005858;
+	margin-top: 15vh;
+}
+div.request{
+	margin-left: 20%;
+	font-size:22px;
+	color: #588ebb;
+	margin-top: 12vh;
+}
 
             /****************************************************************/
             /*					Barre menu horizontal						*/
@@ -24,10 +36,11 @@ h3{
             
 ul.barMenu {
 	list-style-type: none;
-	margin-left: 43%;
+	margin-left: 44%;
 	padding: 0;
 	overflow: hidden;
 	background-color: teal;
+	
 }
 ul.barMenu > li {
 	float: left;
@@ -60,11 +73,6 @@ ul.barMenu > li a:hover {
 a {
 	color: teal;
 }
-            /****************************************************************/
-            /*				Tableaux des noms de protein ou gene			*/
-            /****************************************************************/
-
-
 
 
 /*******************************	Menu pour les comptes		*********************************/
@@ -98,35 +106,54 @@ a {
   	color: white;
 }
 
-/*******************************	Page Index/Recherche avancée		*********************************/
-div.welcome{
-	text-align: center;
-	font-size:64px;
-	color: #005858;
-	margin-top: 15vh;
-}
-div.request{
-	margin-left: 20%;
-	font-size:22px;
-	color: #588ebb;
-	margin-top: 12vh;
-}
 
 
+
+
+		            
             /****************************************************************/
-            /*				Affichage centré pour l'accueil					*/
+            /*					Les input formulaires						*/
             /****************************************************************/
+
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=number], select, input[type=file]{
+	width: 50%;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: white;
+	background-position: 10px 10px; 
+	background-repeat: no-repeat;
+	padding: 12px 20px 12px 40px;
+
+}
+input:disabled {
+  background: #E0E0E0;
+}
+
+/*Formulaire*/
+#formCompte{
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+  top: 40vh;
+  position:absolute;
+
+} 
+
+/*Formulaires centrés */
 div.formulaireCentre{
 	text-align:center;
 	margin-top: 3vh; /* hauteur */
 }
-		            
             /****************************************************************/
-            /*					Barres de recherche							*/
+            /*					input barre de recherche					*/
             /****************************************************************/
-
-input[type=text], input[type=email], input[type=password], input[type=date] {
-	width: 50%;
+.barMenu input[type=text] {
+	width: 24%;
+	margin-left: 13%;
+	top: 10px;
+	position:absolute;
 	box-sizing: border-box;
 	border: 2px solid #ccc;
 	border-radius: 4px;
@@ -157,7 +184,11 @@ input[type=submit]:hover {
 	background-color: teal;
 	color: white;
 }
-
+label{
+	display: block;
+	width: 150px;
+	float: left;
+}
 
             /****************************************************************/
             /*						Compte client							*/
@@ -229,16 +260,8 @@ input.modifier {
 	right:30vh;
 
 }
-/*Formulaire*/
-#formCompte{
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 70%;
-  top: 40vh;
-  position:absolute;
 
-} 
-
+/*Bouton valider et annuler panier*/
 .boutonsPanier{
 	transition-duration: 0.4s;
 	background-color: silver;
@@ -251,6 +274,13 @@ input.modifier {
 	top:75vh; 
 	color: white;
 }
+/*Bouton pour generer facture */
+#BoutonFacture{
+	color:black;
+	height:50%;
+}
+
+/**/
 .prix{
 	position:absolute; 
 	top:35vh;
@@ -258,12 +288,9 @@ input.modifier {
 	color: #588ebb;
 }
 
-#BoutonFacture{
-	color:black;
-	height:50%;
-}
+
            /****************************************************************/
-            /*						Compte personnel						*/
+            /*				Boutons de navigations	sur le cote				*/
             /****************************************************************/	
             
 .bouton1  {
@@ -300,12 +327,24 @@ input.modifier {
 	left:5vh;
 	top:60vh; 
 }
-.bouton1:hover, .bouton2:hover, .bouton3:hover {
+.bouton4  {
+	transition-duration: 0.4s;
+	background-color: silver;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:70vh; 
+}
+
+.bouton1:hover, .bouton2:hover, .bouton3:hover, .bouton4:hover {
 	background-color: teal;
 	color: white;
 }
             /****************************************************************/
-            /*					HyperLiens de recherche Avancee				*/
+            /*					HyperLiens de inscription			*/
             /****************************************************************/
 
 a.linkR  {
@@ -329,95 +368,75 @@ div.inf{
 
 }
 
-input:disabled {
-  background: #E0E0E0;
-}
 
 
-label{
-	display: block;
-	width: 150px;
-	float: left;
-}
 
 
+
+           /****************************************************************/
+            /*					Affichage tableaux en general				*/
+            /****************************************************************/	
 
 #compteClient{
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 70%;
-  top: 40vh;
-  
-  position:absolute; 
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 70%;
+	top: 40vh;
+
+	position:absolute; 
 }
 
 
 #compteClient  td, #compteClient  th {
-  border: 1px solid #ddd;
-  padding: 8px;
+	border: 1px solid #ddd;
+	padding: 8px;
 }
 
 #compteClient td.cellBtn{
-  padding: 0;
+	padding: 0;
 }
-#compteClient tr{background-color: #f2f2f2;}
-
-
-
+#compteClient tr{
+	background-color: #f2f2f2;
+}
 #compteClient th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: teal;
-  color: white;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: teal;
+	color: white;
 }
 
+
+           /****************************************************************/
+            /*					Affichage autres boutons					*/
+            /****************************************************************/	
+
+/*bouton avec n'importe quelle icone*/
 .btn {
-  background-color: #f2f2f2;
-  border: none;
-  color: darkgrey;
-  padding: 12px 16px;
-  font-size: 16px;
-  
-  cursor: pointer;
-}
-
-/* Darker background on mouse-over */
-.btn:hover {
-  background-color: Teal Blue;
-  color:white;
-  
-}
-.btnMinus {
-  background-color: #f2f2f2;
-  border: none;
-  color: red;
-  padding: 12px 16px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-
-
-
-
-
-
-.barMenu input[type=text] {
-	width: 24%;
-	margin-left: 13%;
-	top: 10px;
-	position:absolute;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 4px;
+	background-color: #f2f2f2;
+	border: none;
+	color: darkgrey;
+	padding: 12px 16px;
 	font-size: 16px;
-	background-color: white;
-	background-position: 10px 10px; 
-	background-repeat: no-repeat;
-	padding: 12px 20px 12px 40px;
-
+	cursor: pointer;
 }
+
+.btn:hover {
+	background-color: Teal Blue;
+	color:white;
+}
+
+/* bouton avec icone moins*/
+.btnMinus {
+	background-color: #f2f2f2;
+	border: none;
+	color: red;
+	padding: 12px 16px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+/*Bouton de barre de recherche*/
 .boutonBarre {
 	margin-left: 38%;
 	background-color: #f2f2f2;
@@ -429,8 +448,6 @@ label{
 	position:absolute;
 	cursor: pointer;
 }
-
-/* Darker background on mouse-over */
 .boutonBarre:hover {
 	background-color: Teal Blue;
 	color:white;
@@ -438,24 +455,25 @@ label{
 }
 
 
-
+/*Bouton ajouter oeuvre a panier */
 .btnOeuvre {
-  background-color: #f2f2f2;
-  border: none;
-  color: darkgrey;
-  padding: 10px 14px;
-  font-size: 16px;
-  margin-top:15px;
-  cursor: pointer;
+	background-color: #f2f2f2;
+	border: none;
+	color: darkgrey;
+	padding: 10px 14px;
+	font-size: 16px;
+	margin-top:15px;
+	cursor: pointer;
 }
 
 .btnOeuvre a{
 	color:black;
 }
-/* Darker background on mouse-over */
 .btnOeuvre:hover, .btnOeuvre a:hover{
-  background-color: teal;
-  color:white;
+	background-color: teal;
+	color:white;
   
+}
+
 }
 

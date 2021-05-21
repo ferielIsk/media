@@ -7,34 +7,43 @@
 			echo "	<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; color: #588ebb; '>Modification réussie ! </div>";
 		else{
 			echo 	 "	<div id='formCompte'><form method='post' action='monCompte.php?inf=info'>"
-					."  <label for='mail'> Adresse Mail :</label>"
-					."  <input type='email' name='mail' value='".$_SESSION['adresseMail']."'disabled/><br><br>";
-			if( $_SESSION['type']=='Client')
-				echo	"	<label for='pseudo'> Pseudo :</label>"
-						."  <input type='text' name='pseudo' value='". $_SESSION['pseudo']."'/><br><br>";
-			echo	 "  <label for='prenom'> Prénom :</label>"
+					."  <label for='mail'> Email:</label>";
+			//Si gestionnaire compte à le droit de modifier ces infos
+			if( $_SESSION['type']=='Account_manager')
+				echo "  <input type='email' name='mail' value='".$_SESSION['adresseMail']."'/><br><br>"
+				 	."  <label for='prenom'> First name:</label>"
+					."  <input type='text' name='prenom' value='".$_SESSION['prenom']."'/><br><br>"
+					."	<label for='nom'> Last name:</label>"
+					."  <input type='text' name='nom' value='". $_SESSION['nom']."'/><br><br>";
+			else 
+				echo "  <input type='email' name='mail' value='".$_SESSION['adresseMail']."'disabled/><br><br>"
+					."  <label for='prenom'> First name:</label>"
 					."  <input type='text' name='prenom' value='".$_SESSION['prenom']."'disabled/><br><br>"
-					."	<label for='nom'> Nom :</label>"
-					."  <input type='text' name='nom' value='". $_SESSION['nom']."'disabled/><br><br>"
-
-					."  <label for='dateDeNaissance'> Date de naissance :</label>"
+					."	<label for='nom'> Last name:</label>"
+					."  <input type='text' name='nom' value='". $_SESSION['nom']."'disabled/><br><br>";
+					
+			if( $_SESSION['type']=='Client')
+				echo	"	<label for='pseudo'> Username :</label>"
+						."  <input type='text' name='pseudo' value='". $_SESSION['pseudo']."'/><br><br>";
+				echo "  <label for='dateDeNaissance'> Date of birth :</label>"
 					."  <input type='date' name='dateDeNaissance' value='".date('Y-m-d',strtotime($_SESSION['dateDeNaissance']))."'disabled/><br><br>"
 
 					."  <label for='adresse'> Adresse :</label>"
 					."  <input type='text' name='adresse' value='".$_SESSION['adresse']."'/><br><br>"
-					."	<label for='tel'> Tél :</label>"
+					."	<label for='tel'> Phone number :</label>"
 					."  <input type='text' name='tel' value='".$_SESSION['tel']."'/><br><br>"
 
 
-					."	<label for='mdp'> Mot de passe :</label>"
+					."	<label for='mdp'> Password :</label>"
 					."  <input type='password' name='mdp' placeholder='**********'/><br><br>"
-					."  <input class='modifier' type='submit' name='modifier' value='Modifier'/> </form>"
+					."  <input class='modifier' type='submit' name='modifier' value='Edit'/> </form>"
 
 
-					."  <form method='post' action='monCompte.php?inf=info&suppression=true'> "
-					."  <input type='submit' name='supprimer' value='Supprimer mon compte' class='suppression' />"
-					."	</form></div>";
-				}
+					."  <form method='post' action='monCompte.php?inf=info&suppression=true'> ";
+			if( $_SESSION['type']=='Client') 
+					echo"  <input type='submit' name='supprimer' value='Delete my account' class='suppression' />";
+			echo "	</form></div>";
+		}
 
 	}
 
@@ -100,6 +109,48 @@
 	    	oci_free_statement($ordre);
 	    	$reussi = true;
 		}
+							/*	SEULEMENT GESTIONNAIRE DE COMPTES*/
+		//Si on a modifié l'adresseMail
+		if ($_REQUEST['mail']!=$_SESSION['adresseMail'] and !empty($_REQUEST['mail'])){
+			$_SESSION['adresseMail'] = $_REQUEST['mail'];
+			$txt = "update compte "
+					." set adresseMail = :mail "
+					." where adresseMail = :adresseMail";
+			$ordre = oci_parse($connexion, $txt);
+			oci_bind_by_name($ordre, ":mail", $_REQUEST['mail']);
+            oci_bind_by_name($ordre, ":adresseMail", $_SESSION['adresseMail']);
+            oci_execute($ordre);
+	    	oci_free_statement($ordre);
+	    	$reussi = true;
+		}
+
+		//Si on a modifié le prenom
+		if ($_REQUEST['prenom']!=$_SESSION['prenom'] and !empty($_REQUEST['prenom'])){
+			$_SESSION['prenom'] = $_REQUEST['prenom'];
+			$txt = "update compte "
+					." set prenom = :prenom "
+					." where adresseMail = :adresseMail";
+			$ordre = oci_parse($connexion, $txt);
+			oci_bind_by_name($ordre, ":prenom", $_REQUEST['prenom']);
+            oci_bind_by_name($ordre, ":adresseMail", $_SESSION['adresseMail']);
+            oci_execute($ordre);
+	    	oci_free_statement($ordre);
+	    	$reussi = true;
+		}
+
+
+		//Si on a modifié le nom
+		if ($_REQUEST['nom']!=$_SESSION['nom'] and !empty($_REQUEST['nom'])){
+			$txt = "update compte "
+					." set nom = :nom "
+					." where adresseMail = :adresseMail";
+			$ordre = oci_parse($connexion, $txt);
+			oci_bind_by_name($ordre, ":nom", $_REQUEST['nom']);
+            oci_bind_by_name($ordre, ":adresseMail", $_SESSION['adresseMail']);
+            oci_execute($ordre);
+	    	oci_free_statement($ordre);
+	    	$reussi = true;
+		}
 		if ($reussi)
 			header("Location: monCompte.php?inf=info&modified=true");
         oci_close($connexion);
@@ -143,9 +194,9 @@
     		if (empty($res[$row[0]] ))
     			 $res[$row[0]] = array();
     		if ( $row[2] == 1)
-    			$res[$row[0]]['paye'] ='Payé';
+    			$res[$row[0]]['paye'] ='Yes';
     		else
-    			$res[$row[0]]['paye'] ='Non payé';
+    			$res[$row[0]]['paye'] ='No';
     		if (empty($res[$row[0]]['oeuvres']))
     			$res[$row[0]]['oeuvres'] =array(); 
     		$res[$row[0]]['oeuvres'][$row[1]] = $row[3];
@@ -178,12 +229,12 @@
 
 		//Entete
 		if (empty($arr))
-			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb;'> Vous n'avez aucun emprunt pour le moment. </div>";
+			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb;'> You don't have any borrowing. </div>";
 		else{
-			echo '<table id="compteClient"> <tr> <th>Identifiant</th> <th>Date reservation</th> <th>Date début emprunt</th> <th>Payé</th> <th colspan=2>Facture</th> </tr>';
+			echo '<table id="compteClient"> <tr> <th>Identification</th> <th>Reservation date</th> <th>First date of borrowing</th> <th>Paid</th> <th colspan=2>Bill</th> </tr>';
 			foreach ($arr as $key => $value){
 				//ligne d'un emprunt
-				echo	 '<tr class="emp"> <td> Emprunt#'.$key.'</td>'
+				echo	 '<tr class="emp"> <td> Borrowing#'.$key.'</td>'
 						.	'<td>'. $arr[$key]['dateReservation'] .'</td> '
 						.	'<td>'. $arr[$key]['dateEmprunt'] .'</td> '
 						.	'<td>'. $arr[$key]['paye'] .'</td> '
@@ -195,7 +246,7 @@
 							."  <input type='text' name='ide' value='". $key."'hidden/>"
 							."  <input type='text' name='dateG' value='". $arr[$key]['dateReservation']."'hidden/>"
 							//Bouton pour la facture
-						.	' <input id="BoutonFacture" type="submit" name="facture" value="Ma facture" class="facture"style="width:100%; height:100%;" /></td>';
+						.	' <input id="BoutonFacture" type="submit" name="facture" value="My bill" class="facture"style="width:100%; height:100%;" /></td>';
 
 				$bouton = true;
 				foreach ($arr[$key]['oeuvres'] as $key2 => $value2){
@@ -203,6 +254,7 @@
 					echo "  <input type='text' name='oeuvre[]' value=' - ". $arr[$key]['prixOeuvres'][$key2]." euros.  ". $key2."' hidden/>";
 				}
 				echo '</form>';
+				$i =1;
 				foreach ($arr[$key]['oeuvres'] as $key2 => $value2){
 
 					//Bouton plus a affiché une seule fois
@@ -213,9 +265,9 @@
 					}
 					//Affiche les oeuvres si on appuie sur le plus
 					if(!empty($_REQUEST['ide']) and $key==$_REQUEST['ide']){
-						$i =1;
+						
 						//ligne d'une oeuvre
-						echo "<tr><td></td><td colspan=5> Oeuvre n°".$i." : " .$key2."</td></tr>";
+						echo "<tr><td></td><td colspan=5> Product n°".$i." : " .$key2."</td></tr>";
 						$i=$i+1;
 					}
 				}
@@ -238,14 +290,14 @@
         oci_execute($ordre);
         $test = ($row = oci_fetch_array($ordre, OCI_BOTH));
 		if($test==false)
-			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb; '> Vous n'avez pas de pénalités :) </div> ";
+			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb; '> You have no penalty :) </div> ";
 		else{
-			echo '<table id="compteClient"> <tr> <th>Oeuvre</th> <th>Type</th>   <th>Date de rendu supposée</th> <th>Montant</th> </tr>';
+			echo '<table id="compteClient"> <tr> <th>Product</th> <th>Type</th>   <th>Supposed returning date</th> <th>Cost</th> </tr>';
 			while ($test !=false){
 				echo	 '<tr> <td>'. $row[0] .'</td>'
 						.	  '<td>'. $row[1] .'</td> '
 						.	  '<td>'.date_format( date_add(date_create_from_format('d-M-y',$row[2]), date_interval_create_from_date_string("15 days")),'Y-m-d').'</td>'
-						.	  '<td style="color:red">'. $row[3].'</td> </tr>';
+						.	  '<td style="color:red">'. $row[3].'€</td> </tr>';
 
 				$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
 
@@ -268,7 +320,8 @@
 				." 	and  emprunt.ide = panier.ide "
 				."  and  panier.ido = oeuvre.ido "
 				."  and  oeuvre.ido = createurOeuvre.ido "
-				."  and  oeuvre.ido = editionOeuvre.ido ";
+				."  and  oeuvre.ido = editionOeuvre.ido "
+				;
 		$ordre = oci_parse($connexion, $txt);
         oci_bind_by_name($ordre, ":pseudo", $_SESSION['pseudo']);
         oci_execute($ordre);
@@ -278,30 +331,34 @@
         $ide=null;
 		//Affichage des oeuvres dans un tableaux
 		$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
+		$titres = array();
 		if($test==false)
-			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>Votre panier est vide !</div> ";
+			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>Cart empty !</div> ";
 		else{
-			echo '<table id="compteClient"> <tr> <th>Oeuvre</th> <th>Type</th>   <th> De </th> <th>Edition</th> <th >Prix</th> </tr>';
+			echo '<table id="compteClient"> <tr> <th>Product</th> <th>Type</th>   <th> Of </th> <th>Edition</th> <th >Cost</th> </tr>';
 			while ($test!=false){
-				$ide=$row[5];
-				echo	 '<tr> <td>'. $row[0] .'</td>'
-						.	  '<td>'. $row[1] .'</td> '
-						.	  '<td>'. $row[2] .'</td>'
-						.	  '<td>'. $row[3] .'</td>'
-						.	  '<td>'. $row[4] .'€</td>'
-						.	  '<td style="padding:0"><button class="btnMinus" style="width:100%" onclick="retireOeuvre('.$row[5].','.$row[6].')"><i class="fas fa-minus-circle"></i></td> </tr>';
-				$montant +=$row[4];
+				if (! in_array($row[0], $titres)){
+					$titres[]=$row[0];
+					$ide=$row[5];
+					echo	 '<tr> <td>'. $row[0] .'</td>'
+							.	  '<td>'. $row[1] .'</td> '
+							.	  '<td>'. $row[2] .'</td>'
+							.	  '<td>'. $row[3] .'</td>'
+							.	  '<td>'. $row[4] .'€</td>'
+							.	  '<td style="padding:0"><button class="btnMinus" style="width:100%" onclick="retireOeuvre('.$row[5].','.$row[6].')"><i class="fas fa-minus-circle"></i></td> </tr>';
+					$montant +=$row[4];
+				}
 				$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
 			}
 
 			echo'</table><br>';
 
-			echo '<div class="prix"> Prix total à payer : '.$montant.'€</div>';
+			echo '<div class="prix"> Total: '.$montant.'€</div>';
 
 			//Affichage des boutons
 			echo " <form class='boutonsPanier' method='post' action='monCompte.php?inf=panier&ide=".$ide."'> "
-					." <input type='submit' name='valider' value='Valider le panier'/> <br>"
-					." <input type='submit' name='annuler' value='Annuler le panier'/>	</form>";
+					." <input type='submit' name='valider' value='Validate'/> <br>"
+					." <input type='submit' name='annuler' value='Delete my cart '/>	</form>";
 		}
 
 
@@ -332,7 +389,7 @@
 	}
 	function validerPanier(){
 		if ($_SESSION['etat']=='Suspended' or $_SESSION['etat']=='In_validation_process'){
-			echo "	<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; color: #588ebb; '> Votre compte est toujours : <br> ". $_SESSION['etat'] ."</div>";
+			echo "	<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; color: #588ebb; '> Your account is remaining in : <br> ". $_SESSION['etat'] ."</div>";
 			return -1;
 		}else{
 			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
