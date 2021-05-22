@@ -17,8 +17,10 @@
 				  <li><a href="about.php">About</a></li>
 				  <?php
 				  	session_start(['cookie_lifetime' => 600]);
-				  	if(!empty($_SESSION['started']))
+				  	if(!empty($_SESSION['started'])){
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
+				  		echo '<li><a href="monCompte.php?inf=panier">My cart</a></li>';
+			        }
 				  	else 
 				  		echo '<li><a href="connexion.php">Connexion</a></li>';
 				  ?>
@@ -107,7 +109,7 @@
 		if ($test==false)
 			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb;'> Cette oeuvre n'existe pas. </div>";
 		else{
-            echo'<div class="col-xs-5" style="border:0px solid gray; font-size:16px"> <h1>' . $row[0] . '</h1><br>';
+            echo'<div class="col-xs-5" style="border:0px solid gray; font-size:16px;margin-left: 30px"> <h1>' . $row[0] . '</h1><br>';
 
             echo'<b> Type: </b> ' . $row[2].'<br>';
             echo'<b> Release date: </b> ' . date('d-m-y',strtotime($row[3])).'<br>';
