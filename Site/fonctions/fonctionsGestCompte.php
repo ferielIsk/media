@@ -52,7 +52,7 @@
 			or empty($_POST['pseudo']) or empty($_POST['adresse'])
 			or empty($_POST['dateDeNaissance']) or empty($_POST['mail'])
 			or empty($_POST['numero']) or empty($_POST['motDepasse']) 
-			or empty($_POST['document']) or empty($_POST['type']) ){
+		    or empty($_POST['type']) ){
 
 				echo "<div style='position:absolute; top: 25vh; color:crimson;left: 40%;font-size:32px;  '>All fields must be filled!</div>";
 
@@ -78,11 +78,19 @@
 				//Appel à la procédure ajouteClient
 
 				$texte = "begin ajouteCompte('".$mail."', '".$nom."', '"
-																			 .$prenom."', '".$adresse."', '".$numero."', "
-																			 ."TO_DATE('".$dateDeNaissance."','yyyy-mm-dd'),'".$hashedMdP."','". $type."') ; end;";
+								.$prenom."', '".$adresse."', '".$numero."', "
+								."TO_DATE('".$dateDeNaissance."','yyyy-mm-dd'),'".$hashedMdP."','". $type."') ; end;";
+								
 
 				$ordre = ociparse($connexion, $texte);
 				ociexecute($ordre);
+				
+				if ($type=="Client"){
+					$texte = "insert into client values('Activated','".$pseudo."','".$mail."', 0)";
+					$ordre = ociparse($connexion, $texte);
+					ociexecute($ordre);
+				
+				}
 				ocilogoff($connexion);
 			}
 
