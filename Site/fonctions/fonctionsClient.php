@@ -280,7 +280,7 @@
 	/*Affiche les pénalités du client */
 	function affichePenalites(){
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-		$txt = "select titre, type, dateDebutEmprunt, penalite.montant "
+		$txt = "select titre, type, dateDebutEmprunt, penalite.montant, idp "
 				." from emprunt, penalite, oeuvre "
 				." where idcClient = :pseudo "
 				." 	and  emprunt.ide = penalite.ide "
@@ -292,9 +292,9 @@
 		if($test==false)
 			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb; '> You have no penalty :) </div> ";
 		else{
-			echo '<table id="compteClient"> <tr> <th>Product</th> <th>Type</th>   <th>Supposed returning date</th> <th>Cost</th> </tr>';
+			echo '<table id="compteClient"> <tr><th>ID of penalty</th> <th>Product</th> <th>Type</th>   <th>Supposed returning date</th> <th>Cost</th> </tr>';
 			while ($test !=false){
-				echo	 '<tr> <td>'. $row[0] .'</td>'
+				echo	 '<tr> <td>#'. $row[4] .'</td><td>'. $row[0] .'</td>'
 						.	  '<td>'. $row[1] .'</td> '
 						.	  '<td>'.date_format( date_add(date_create_from_format('d-M-y',$row[2]), date_interval_create_from_date_string("15 days")),'Y-m-d').'</td>'
 						.	  '<td style="color:red">'. $row[3].'€</td> </tr>';
