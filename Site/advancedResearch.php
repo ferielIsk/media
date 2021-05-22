@@ -31,7 +31,8 @@
         <h1>Advanced Research</h1>
         <div class="formulaireResearch">
             <form method="post" action="resultsRechercheAvancee.php">
-                
+                Work's reference : </br>
+                <input type="text" name="workref"> </input> <br><br>
                 Work's name : </br>
                 <input type="text" name="workName"> </input> <br><br>
                 Author's name : </br>

@@ -2,48 +2,48 @@
   <head> 
         <link rel="stylesheet" href="styleGLA.css" type="text/css" />
         
- 		<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
         <title> Page résultats de recherche avancée </title>
   </head>
 
   <body>
         
-    	<! -- Début Barre principale -->
+      <! -- Début Barre principale -->
 
-				<ul class="barMenu">
-				  <li><a href="index.php">Home</a></li>
-				  <li><a href="advancedResearch.php">Advanced research</a></li>
-				  <li><a href="about.php">About</a></li>
-				  <?php
-				  	session_start(['cookie_lifetime' => 600]);
-				  	if(!empty($_SESSION['started']))
-				  		echo '<li><a href="monCompte.php">My account</a></li>';
-				  	else 
-				  		echo '<li><a href="connexion.php">Connexion</a></li>';
-				  ?>
-				</ul>
-				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
-				  <input type="text" name="recherche" placeholder="Search.."> </input>
-				  <button class="boutonBarre"><i class="fas fa-search"></i></button>
-				</form>
-		<! -- Fin Barre principale -->
+        <ul class="barMenu">
+          <li><a href="index.php">Home</a></li>
+          <li><a href="advancedResearch.php">Advanced research</a></li>
+          <li><a href="about.php">About</a></li>
+          <?php
+            session_start(['cookie_lifetime' => 600]);
+            if(!empty($_SESSION['started']))
+              echo '<li><a href="monCompte.php">My account</a></li>';
+            else 
+              echo '<li><a href="connexion.php">Connexion</a></li>';
+          ?>
+        </ul>
+        <form class="barMenu" method="post" action="resultatsDeRecherche.php">
+          <input type="text" name="recherche" placeholder="Search.."> </input>
+          <button class="boutonBarre"><i class="fas fa-search"></i></button>
+        </form>
+    <! -- Fin Barre principale -->
         
 
         <?php
             
           echo '<div class="main"></br></br></br><h1> Result(s) : </h1></br>';
             
-            
+          $ref =$_REQUEST['workref'];
           $workName = $_REQUEST['workName'];
           $authorName = $_REQUEST['authorName'];
           $editionName = $_REQUEST['editionName'];
           $type = $_REQUEST['type'];
 
-
+     
         
-          if (empty($workName)and empty($authorName) and empty($editionName)){
+          if (empty($ref) and empty($workName)and empty($authorName) and empty($editionName)){
 
-              echo "please, enter a keyword";
+              echo "Please, enter one or more keywords !";
            }
             
           else{
@@ -58,6 +58,9 @@
               . "from oeuvre o, createurOeuvre co,editionOeuvre eo "
               . "where o.ido= co.ido and o.ido= eo.ido";
 
+               if(!empty($ref)) {
+                  $requete = $requete . " and o.reference = :ref ";
+              }
 
               if(!empty($workName)) {
                   $requete = $requete . " and upper(titre) like '%' || upper(:txtTitre) || '%' ";
@@ -81,6 +84,10 @@
               $ressource = oci_parse($connexion, $requete);
 
               
+              if(!empty($ref)) {
+                 oci_bind_by_name($ressource, ":ref", $ref);
+              }
+
               if(!empty($workName)) {
                  oci_bind_by_name($ressource, ":txtTitre", $workName);
               }
