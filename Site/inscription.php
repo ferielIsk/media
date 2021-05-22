@@ -13,7 +13,7 @@
 				  <li><a href="advancedResearch.php">Advanced research</a></li>
 				  <li><a href="about.php">About</a></li>
 				  <?php
-				  	session_start(['cookie_lifetime' => 600]);
+				  	session_start(['cookie_lifetime' => 1800]);
 				  	if(!empty($_SESSION['started']))
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
 				  	else 
@@ -21,7 +21,9 @@
 				  ?>
 				</ul>
 				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
-				  <input type="text" name="recherche" placeholder="Search.."> </input>
+				 <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,10}" 
+ 			            title =" keyword must contain only letters and numbers ! no more than 10 characters"> 
+ 			     </input>
 				  <button class="boutonBarre"><i class="fas fa-search"></i></button>
 				</form>
 		<! -- Fin Barre principale -->
@@ -44,31 +46,33 @@
 
 
                 <label style="position:absolute; left:10%">Last name</label>
-                <input type="text" name="nom"/> </br></br>
+                <input type="text" name="nom" pattern="[A-Za-z _]{1,20}" title =" Last name must contain only letters and the underscore and no more than 20 characters" required="" />
+				 </br></br>
 
                 <label style="position:absolute; left:10%">First name</label>
-                <input type="text" name="prenom"/> </br></br>
+                <input type="text" name="prenom" pattern="[A-Za-z _]{1,20}" title ="First name must contain only letters and the underscore; no more than 20 characters" required /> </br></br>
 
                 <label style="position:absolute; left:10%">Username</label>
-                <input type="text" name="pseudo"/> </br></br>
+                <input type="text" name="pseudo" pattern="[A-Za-z0-9_]{1,10}" title ="Username must contain only letters,numbers and the underscore; no more than 10 characters" required /> </br></br>
 
                 <label style="position:absolute; left:10%">Adresse</label>
-                <input type="text" name="adresse"/> </br></br>
+                <input type="text" name="adresse" pattern="[A-Za-z-0-9_,/\s/]{1,60}" title ="adress must contain only letters,numbers,commas and the underscore; no more than 60 characters" required/> </br></br>
 
                 <label style="position:absolute; left:10%">Date of birth</label>
-                <input type="date" name="dateDeNaissance"/></br></br>
+                <input type="date" name="dateDeNaissance" required /></br></br>
 
                 <label style="position:absolute; left:10%">Phone number</label>
-                <input type="text" name="numero"/> </br></br>
+                <input type="text" name="numero"pattern="[0-9]{10}"title="Phone number must stard with '0' and contain 10 numbers" required/> 
+                  </br></br>
 
                 <label style="position:absolute; left:10%">Email</label>
-                <input type="email" name="mail"/></br></br>
+                <input type="email" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please, enter a valid email address" required /></br></br>
 
                 <label style="position:absolute; left:10%">Password</label>
-                <input type="password" name="motDepasse"/></br></br>
+                <input type="password" name="motDepasse" pattern=".{8,}" title=" Password must contain at least eight or more characters" required /></br></br>
 
                 <label style="position:absolute; left:10%">Add a document (Proof of ID)</label>
-                <input type="file" name="document"/></br></br>
+                <input type="file" name="document" required /></br></br>
 
 
                 <input type="submit" name="inscriptionForm" value="Sign up"/></br></br>
@@ -104,6 +108,7 @@
 			$mail = $_POST['mail'];
 			$numero = $_POST['numero'];
 			$motDepasse = $_POST['motDepasse'];
+			
 
 			//on hache le mot de passe
 			$hashedMdP=password_hash($motDepasse, PASSWORD_DEFAULT);

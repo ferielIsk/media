@@ -14,7 +14,7 @@
 				  <li><a href="advancedResearch.php">Advanced research</a></li>
 				  <li><a href="about.php">About</a></li>
 				  <?php
-				  	session_start(['cookie_lifetime' => 600]);
+				  	session_start(['cookie_lifetime' => 1800]);
 				  	if(!empty($_SESSION['started']))
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
 				  	else 
@@ -22,7 +22,8 @@
 				  ?>
 				</ul>
 				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
-				  <input type="text" name="recherche" placeholder="Search.."> </input>
+				  <input type="text" name="recherche" placeholder="Search.."pattern="[A-Za-z0-9]{1,10}" 
+			             title =" keyword must contain only letters and numbers ! no more than 10 characters"> </input>
 				  <button class="boutonBarre"><i class="fas fa-search"></i></button>
 				</form>
 		<! -- Fin Barre principale -->
@@ -37,9 +38,11 @@
 
 
 	<?php
+	    // si le champ de la recherche est vide
 		if(empty($_REQUEST['recherche'])){
 			echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px">Please, enter a keyword !</div>';
-		}else{
+		}
+		else{
 	 
 			$mot = $_REQUEST['recherche'];
 			
@@ -67,21 +70,35 @@
 		    oci_execute($ordre);
 		    
 		   
-		    echo '<table  id="compteClient" style="margin-left:20%">';
-		    echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
+		    //si la requete n a pas de resulat
+		    
+		    if (oci_fetch_array($ordre, OCI_BOTH) ==false){
+		    
+		        echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:26px; color:#A5749D"> 
+		        Sorry ,your research does not have result !</div>';
+		    
+		    }
 
 		    
+		    
+            else{
+                echo '<table  id="compteClient" style="margin-left:20%">';
+		        echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
+		            
+		         while (($row = oci_fetch_array($ordre, OCI_BOTH)) !=false) {
+		         
+	                    echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
+	                   		 .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
+	                   		 .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">
+	                   		 Show more...<i class="fas fa-plus-circle"></i></button>';
 
-		    while (($row = oci_fetch_array($ordre, OCI_BOTH)) !=false) {
-		            echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
-		           		 .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
-		           		 .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">Show more...<i class="fas fa-plus-circle"></i></button>';
-
+		          }
+		          echo '</table>';
+		                   
+		        
 		    }
-		    echo '</table>';
-		           
-		    oci_close($connexion);
-		}
+		oci_close($connexion);
+		    }
 
 	?>
 		<script> 

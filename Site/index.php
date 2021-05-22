@@ -11,7 +11,7 @@
 				  <li><a href="advancedResearch.php">Advanced research</a></li>
 				  <li><a href="about.php">About</a></li>
 				  <?php
-				  	session_start(['cookie_lifetime' => 600]);
+				  	session_start(['cookie_lifetime' => 1800]);
 				  	if(!empty($_SESSION['started']))
 				  		echo '<li><a href="monCompte.php">My account</a></li>';
 				  	else 
@@ -24,7 +24,8 @@
 		<div  style="	text-align:center;	margin-top: 0vh;    " >
 
 			<form  method="post" action="resultatsDeRecherche.php"><br><br>
-			  <input type="text" name="recherche" placeholder="Search.." style="width: 50%;"> </input>
+			  <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,10}" 
+			  title =" keyword must contain only letters and numbers ! no more than 10 characters" style="width: 50%;"> </input>
 			  <button  style="	background-color: #f2f2f2; border: none; color: darkgrey;padding: 12px 30px; 
 			  					font-size: 16px; cursor: pointer; "><i class="fas fa-search"></i></button>
 			</form>
