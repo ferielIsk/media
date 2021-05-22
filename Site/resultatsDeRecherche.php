@@ -37,47 +37,51 @@
 
 
 	<?php
- 
-		$mot = $_REQUEST['recherche'];
-		
-		echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px"> Result(s) for : "'. $mot.'" </div>';
-		
-		$mot="%".$mot."%";
-		//connexion à la BD
-		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
+		if(empty($_REQUEST['recherche'])){
+			echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px">Please, enter a keyword !</div>';
+		}else{
+	 
+			$mot = $_REQUEST['recherche'];
+			
+			echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px"> Result(s) for : "'. $mot.'" </div>';
+			
+			$mot="%".$mot."%";
+			//connexion à la BD
+			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
-   		$texte = "select distinct o.reference,o.titre , o.type, o.prixLocation,eo.nom,co.nom"
-                      ." from oeuvre o,editionOeuvre eo,createurOeuvre co"
-                      ." where (o.ido= co.ido and o.ido= eo.ido and upper(o.titre) like upper(:mot))"
-                      ." or ( o.ido= co.ido and o.ido= eo.ido and upper( o.description) like upper(:mot))"
-                      ." or (o.ido= co.ido and o.ido= eo.ido and upper(co.nom) like upper(:mot))"
-                      ." or ( o.ido= co.ido and o.ido= eo.ido and upper(eo.nom) like upper(:mot))";
-       
-       
-        
-        
+	   		$texte = "select distinct o.reference,o.titre , o.type, o.prixLocation,eo.nom,co.nom"
+		                  ." from oeuvre o,editionOeuvre eo,createurOeuvre co"
+		                  ." where (o.ido= co.ido and o.ido= eo.ido and upper(o.titre) like upper(:mot))"
+		                  ." or ( o.ido= co.ido and o.ido= eo.ido and upper( o.description) like upper(:mot))"
+		                  ." or (o.ido= co.ido and o.ido= eo.ido and upper(co.nom) like upper(:mot))"
+		                  ." or ( o.ido= co.ido and o.ido= eo.ido and upper(eo.nom) like upper(:mot))";
+		   
+		   
+		    
+		    
 
-        $ordre = oci_parse($connexion, $texte);
+		    $ordre = oci_parse($connexion, $texte);
 
-        oci_bind_by_name($ordre, ':mot', $mot);
-        
-        oci_execute($ordre);
-        
-       
-        echo '<table  id="compteClient" style="margin-left:20%">';
-        echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
+		    oci_bind_by_name($ordre, ':mot', $mot);
+		    
+		    oci_execute($ordre);
+		    
+		   
+		    echo '<table  id="compteClient" style="margin-left:20%">';
+		    echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
 
-        
+		    
 
-        while (($row = oci_fetch_array($ordre, OCI_BOTH)) !=false) {
-                echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
-               		 .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
-               		 .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">Show more...<i class="fas fa-plus-circle"></i></button>';
+		    while (($row = oci_fetch_array($ordre, OCI_BOTH)) !=false) {
+		            echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
+		           		 .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
+		           		 .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">Show more...<i class="fas fa-plus-circle"></i></button>';
 
-        }
-        echo '</table>';
-               
-        oci_close($connexion);
+		    }
+		    echo '</table>';
+		           
+		    oci_close($connexion);
+		}
 
 	?>
 		<script> 

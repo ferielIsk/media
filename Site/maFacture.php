@@ -1,4 +1,6 @@
 <?php
+if (empty($_REQUEST['ide']))
+	header("Location: index.php"); 
 require('fpdf/fpdf.php');
 
 class PDF extends FPDF

@@ -313,7 +313,7 @@
 	function affichePanier(){
 
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-		$txt = "select distinct titre, type, createurOeuvre.nom, editionOeuvre.nom, prixLocation, emprunt.ide,  oeuvre.ido "
+		$txt = "select distinct titre, type, createurOeuvre.nom, editionOeuvre.nom, prixLocation, emprunt.ide,  oeuvre.ido, reference "
 				." from panier, oeuvre, createurOeuvre, editionOeuvre, emprunt  "
 				." where valide = 0 "
 				."	and  idcClient = :pseudo "
@@ -335,7 +335,7 @@
 		if($test==false)
 			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>Cart empty !</div> ";
 		else{
-			echo '<table id="compteClient"> <tr> <th>Product</th> <th>Type</th>   <th> Of </th> <th>Edition</th> <th >Cost</th> </tr>';
+			echo '<table id="compteClient"> <tr> <th>Product</th> <th>Type</th>   <th> Of </th> <th>Edition</th> <th >Reference</th><th >Cost</th> </tr>';
 			while ($test!=false){
 				if (! in_array($row[0], $titres)){
 					$titres[]=$row[0];
@@ -344,6 +344,7 @@
 							.	  '<td>'. $row[1] .'</td> '
 							.	  '<td>'. $row[2] .'</td>'
 							.	  '<td>'. $row[3] .'</td>'
+							.	  '<td>'. $row[7] .'</td>'
 							.	  '<td>'. $row[4] .'€</td>'
 							.	  '<td style="padding:0"><button class="btnMinus" style="width:100%" onclick="retireOeuvre('.$row[5].','.$row[6].')"><i class="fas fa-minus-circle"></i></td> </tr>';
 					$montant +=$row[4];

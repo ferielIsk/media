@@ -1,6 +1,6 @@
 <?php
 	function ajouter_oeuvre() {
-		echo '<div class="ligne"style = "display: flex;margin: 10px;">
+		echo '<div id="formCompte" >
 
             <form method="post" action="monCompte.php?inf=ajouteOeuvre">
 
@@ -50,7 +50,7 @@
                 </select>
                 </br></br>
 
-                <input type="submit" name="oeuvreForm" value="valider"/></br></br>
+                <input type="submit" name="oeuvreForm" value="Validate"/></br></br>
             </form>
         </div>';
 
@@ -83,7 +83,7 @@
 				$profession = $_POST['profession'];
 
 				//connexion à la BD
-				$connexion = oci_connect('c##nndao_a', 'nndao_a', 'dbinfo');
+				$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
 
 				//Appel à la procédure ajouteOeuvre
@@ -98,13 +98,13 @@
 	}
 
 	function supprimer_oeuvre() {
-		echo '<div class="ligne"style = "display: flex;margin: 10px;">
+		echo '<div id="formCompte">
 
-            <form method="post" action="fonctionPersonnel.php?inf=supprimerOeuvre">
-            	<label>Identifier of product to delete: </label>
-                <input type="number" name="ido"/></br></br>
+            <form method="post" action="monCompte.php?inf=supprimerOeuvre">
+            	ID of product to delete: <br>
+                <input type="number" name="ido"/>
 
-                <input type="submit" name="oeuvreSuppForm" value="valider"/></br></br>
+                <input type="submit" name="oeuvreSuppForm" value="Validate"/></br></br>
             </form>
         </div>';
 
@@ -112,17 +112,18 @@
 		if(isset($_POST['oeuvreSuppForm']) ){
 			//On vérifie que tous les champs ont bien été remplis
 			if ( empty($_REQUEST['ido']) ){
-				echo "Enter an identifier: ";
+				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Enter an identifier! <div>";
 			}else{
 				$ido = $_REQUEST['ido'];
 				//connexion à la BD
-				$connexion = oci_connect('c##nndao_a', 'nndao_a', 'dbinfo');
+				$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 				$texte = "update oeuvre "
 					." set est_disponible = 0 "
 					." where ido = :ido";
 	      		$ordre2 = oci_parse($connexion, $texte);
 	      		oci_bind_by_name($ordre2, ":ido", $_REQUEST['ido']);
-	      		oci_execute($ordre2);
+	      		if(oci_execute($ordre2))
+	      				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Product deleted! <div>";;
 		    	oci_free_statement($ordre2);
 		    	oci_close($connexion);
 
@@ -133,16 +134,16 @@
 
 	function modifier_oeuvre() {
 		if( empty($_REQUEST['ido']) ) {
-			echo '<div class="ligne" id="modif_oeuvre" style = "display: flex; margin: 10px;">
+			echo '<div id="formCompte" >
 
-        	Id of the product to edit: 
+        	ID of the product to edit: 
         	<form method="post" action="monCompte.php?inf=modifierOeuvre">
         	<input type="number" name ="ido" id="ido"> </input>
 
-        	<input style="width:100%" type="submit" name="affiche" value="Valider"/>
+        	<input type="submit" name="affiche" value="Validate"/>
         	</form></div>';
 		} else {
-			$connexion = oci_connect('c##nndao_a', 'nndao_a', 'dbinfo');
+			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
     		$texte = " select ido, reference, titre, description, type, nbExemplaires, prixAchat,prixLocation, dateParution "
     				. " from oeuvre "
@@ -158,7 +159,7 @@
 					if (!empty($_REQUEST['modifiedOeuvre']) and $_REQUEST['modifiedOeuvre']==true)
 						echo "	Modification done!";
 
-					echo '<form method="post" action="monCompte.php?inf=modifierOeuvre">
+					echo '<div id="formCompte" ><form method="post" action="monCompte.php?inf=modifierOeuvre">
 						Identifier of product : '.$row[0].' <br><br>
 
 		                <label>Reference</label>
@@ -195,11 +196,12 @@
 		                <input type="number" name="prixLocation" value="'.$row[7].'"/> </br></br>
 
 		                <label>Date of publication</label>
-		                <input type="hidden" name="dateParutionAncienne" value="'.$row[8].'"/>
-		                <input type="date" name="dateParution" value="'.$row[8].'"/></br></br>
+		                <input type="hidden" name="dateParutionAncienne" value="'.date('d-m-y',strtotime($row[8])).'"/>
+		                
+		                <input type="date" name="dateParution" value="'.date('Y-m-d',strtotime($row[8])).'"/></br></br>
 
-		                <input type="submit" name="modifierOe" value="Modifier"/></br></br>
-		            </form>';
+		                <input type="submit" name="modifierOe" value="Edit"/></br></br>
+		            </form></div>';
 		            $test=false;
 
 				}
@@ -211,7 +213,7 @@
 
 
 	function modifInformationOeuvre() {
-		$connexion = oci_connect('c##nndao_a', 'nndao_a', 'dbinfo');
+		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$reussi = false;
 		//Si on a modifié le reference
 		if ($_REQUEST['reference']!=$_REQUEST['referenceAncienne'] and !empty($_REQUEST['reference'])){

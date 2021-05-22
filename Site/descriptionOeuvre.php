@@ -110,7 +110,7 @@
             echo'<div class="col-xs-5" style="border:0px solid gray; font-size:16px"> <h1>' . $row[0] . '</h1><br>';
 
             echo'<b> Type: </b> ' . $row[2].'<br>';
-            echo'<b> Release date: </b> ' . date('d-m-Y',strtotime($row[3])).'<br>';
+            echo'<b> Release date: </b> ' . date('d-m-y',strtotime($row[3])).'<br>';
             echo"<b> Purchase price: </b> ". $row[4].'€<br>';
             echo'<b> Borrowing price: </b> ' . $row[5].'€<br>';
             echo'<b> Number of copies: </b> ' . $row[7].'<br>';

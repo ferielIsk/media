@@ -338,11 +338,38 @@ input.modifier {
 	left:5vh;
 	top:70vh; 
 }
-
-.bouton1:hover, .bouton2:hover, .bouton3:hover, .bouton4:hover {
+.bouton5  {
+	transition-duration: 0.4s;
+	background-color: lightskyblue;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:80vh; 
+}
+.bouton6  {
+	transition-duration: 0.4s;
+	background-color: lightcoral;
+	color: white;
+	border-radius: 4px;
+	width: 15%;
+	height: 50px;
+	position:absolute; 
+	left:5vh;
+	top:90vh; 
+}
+.bouton1:hover, .bouton2:hover, .bouton3:hover, .bouton4:hover{
 	background-color: teal;
 	color: white;
 }
+.bouton5:hover {
+	background-color: deepskyblue;
+}
+.bouton6:hover {
+	background-color: crimson;
+} 
             /****************************************************************/
             /*					HyperLiens de inscription			*/
             /****************************************************************/

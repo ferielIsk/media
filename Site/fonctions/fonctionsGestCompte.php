@@ -37,8 +37,7 @@
                 <label>Password</label>
                 <input type="password" name="motDepasse"/></br></br>
 
-                <label>Join a document </label>
-                <input type="file" name="document"/></br></br>
+                </br></br>
 
 
                 <input type="submit" name="inscriptionForm" value="Validate"/></br></br>
@@ -92,21 +91,22 @@
 
 	function supprimer_compte() {
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-		$txt = "select adresseMail "
-			." from client "
-			." where etat = 'Demande_de_suppression'";
+		$txt = "select client.adresseMail, pseudo, nom, prenom "
+			." from client, compte "
+			." where etat = 'Asked_tobe_deleted'
+				and client.adresseMail = compte.adresseMail";
 		$ordre = oci_parse($connexion, $txt);  
         oci_execute($ordre);
         $test = ($row = oci_fetch_array($ordre, OCI_BOTH));
         if($test==false)
 			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>There's no client request.</div>";
 		else {
-			echo '<table id="compteClient"> <tr> <th>Email</th> <th>Delete</th> </tr>';
+			echo '<table id="compteClient"> <tr> <th>Email</th> <th>Username</th> <th>Last name</th><th>First name</th></tr>';
 			while ($test !=false){
-				echo '<tr> <td>'. $row[0] .'</td>'
+				echo '<tr> <td>'. $row[0] .'</td>'.'<td>'. $row[1] .'</td>'.'<td>'. $row[2] .'</td><td>'. $row[3] .'</td>'
 					. '<td>'. '<form method="post" action="monCompte.php?inf=supprimer">'
 					. '<input type="hidden" name="adresse_supp" id="adresse_supp" value="'.$row[0].'">'
-					. '</td><td><input type="submit" name="supprimeCompte" value="Supprimer le compte"/>'
+					. '<input type="submit" name="supprimeCompte" style="width:100%; height:50px;" value="Delete"/>'
 					. '</form>'.'</td></tr>';
 				$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
 			}
@@ -129,40 +129,10 @@
 
 
 	function modifier_compte() {
-		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-		$txt = "select pseudo, etat "
-			." from client "
-			." where etat != 'Actif'";
-		$ordre = oci_parse($connexion, $txt);  
-        oci_execute($ordre);
-        $test = ($row = oci_fetch_array($ordre, OCI_BOTH));
-        if($test==false)
-			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>There is no account to edit.</div>";
-		else {
-			echo '<table id="compteClient"> <tr> <th>Username</th> <th>Actual state</th> <th>New state</th> </tr>';
-			while ($test !=false){
-				echo '<tr> <td>'. $row[0] .'</td>'
-					. '<td>'. $row[1] .'</td>'
-					. '<td>'. '<form method="post" action="monCompte.php?inf=modifier">'
-					. '<input type="hidden" name="pseudo" id="pseudo" value="'.$row[0].'">'
-
-					. '<select id="nouvelEtat" name="nouvelEtat>"'
-					. '<option value="In_validation_process">In_validation_process</option>'   
-					. '<option value="Activated">Activated</option>'
-					. '<option value="Asked_tobe_deleted">Asked_tobe_deleted</option>'
-					. '</select></br></br>'
-
-					. '</td><td><input type="submit" name="modifieEtatCompte" value="Editt"/>'
-					. '</form>'.'</td></tr>';
-				$test = ($row = oci_fetch_array($ordre, OCI_BOTH)); 
-			}
-			echo '</table>';
-		}
-    	oci_free_statement($ordre);
-    	oci_close($connexion);
 
     	if(isset($_POST['modifieEtatCompte']) ){
     		if (!empty($_POST['pseudo']) and !empty($_POST['nouvelEtat'])) {
+    			
     			$connexion2 = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
     			$texte = "begin modifieEtatCompteClient(:pseudo, :nouvelEtat, :msg) ; end;";
     			$ordre2 = oci_parse($connexion2, $texte); 
@@ -174,5 +144,46 @@
     	        oci_close($connexion2);
     		}
     	}
+    	
+    			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
+		$txt = "select pseudo, etat, client.adresseMail, prenom, nom "
+			." from client, compte "
+			." where etat != 'Actif'  and client.adresseMail = compte.adresseMail";
+		$ordre = oci_parse($connexion, $txt);  
+        oci_execute($ordre);
+        $test = ($row = oci_fetch_array($ordre, OCI_BOTH));
+        
+        if($test==false)
+			echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>There is no account to edit.</div>";
+		else {
+			echo '<table id="compteClient"> <tr> <th>Email</th> <th>Last name</th><th>First name</th><th>Actual state</th> <th>New state</th> <th>Action</th><th>File ID</th></tr>';
+			while ($test !=false){
+				echo '<tr> <td>'. $row[2] .'</td>'.'<td>'. $row[4] .'</td><td>'. $row[3] .'</td>'
+					. '<td>'. $row[1] .'</td>'
+					. '<td>'. '<form method="post" action="monCompte.php?inf=modifier">'
+					. '<input type="hidden" name="pseudo" id="pseudo" value="'.$row[0].'">'
+
+					. '<select id="nouvelEtat" name="nouvelEtat" style="width:100%; height:50px">' 
+					. '<option value="Activated">Activated</option>'
+					. '<option value="Suspended">Suspended</option>'
+					. '</select></br></br>'
+
+					. '</td><td><input type="submit" name="modifieEtatCompte" style="width:100%; height:50px" value="Edit"/>'
+					. '</form>'.'</td><td>'
+					.'<a href="monCompte.php?inf=file&id='.$row[0].'"  > <i class="fas fa-file"></i></a></td></tr>';
+				$test = ($row = oci_fetch_array($ordre, OCI_BOTH)); 
+			}
+			echo '</table>';
+		}
+		
+    	oci_free_statement($ordre);
+    	oci_close($connexion);
+
+	}
+	
+	
+	function visuFile($id){
+		$file = "files/".$id.".pdf";
+		echo "<iframe src=\"".$file."\" width=\"80%\" style=\"height:100%;margin-top:100px\"></iframe>";
 	}
 ?>

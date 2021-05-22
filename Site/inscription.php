@@ -30,8 +30,8 @@
 			if (!empty($_SESSION['started']) and $_SESSION['started'] == true)
 				header("Location: monCompte.php");
 			if (!empty($_REQUEST['inscr'])){
-				if (empty($_REQUEST['inscr'])=="reussie")
-					echo '<div class="request" style="margin-top:5vh; margin-left:50%; font-size:32px; color: steelblue;"> Your request will be processed !  </div>';
+				if ($_REQUEST['inscr']=="reussie")
+					echo '<div class="request" style="position:absolute; top:24vh; margin-left:36%;  font-size:32px; color: steelblue;"> Your request will be processed !  </div>';
 				else
 					echo '<div class="request" style="position:absolute; top:24vh; margin-left:40%; font-size:32px; color: crimson;"> User exists already !  </div>';
 			}
@@ -40,7 +40,7 @@
 		<div class="request" style="margin-top:10vh; margin-left:25%"> Please enter your information</div>
         <div  class="formulaireCentre">
 
-            <form method="post" action="inscription.php">
+            <form method="post" action="inscription.php" enctype="multipart/form-data">
 
 
                 <label style="position:absolute; left:10%">Last name</label>
@@ -84,13 +84,15 @@
 	//Si le formulaire a été validé
 	if(isset($_POST['inscriptionForm']) ){
 
+
+
 		//On vérifie que tous les champs ont bien été remplis
 		if (empty($_POST['nom']) or empty($_POST['prenom'])
 		or empty($_POST['pseudo']) or empty($_POST['adresse'])
 		or empty($_POST['dateDeNaissance']) or empty($_POST['mail'])
 		or empty($_POST['numero']) or empty($_POST['motDepasse']) ){
 
-			echo "All fields must be filled!";
+			echo '<div class="request" style="position:absolute; top:24vh; margin-left:40%; font-size:32px; color: crimson;">All fields must be filled! </div>';
 
 		}else{
 
@@ -126,8 +128,20 @@
 				ociexecute($ordre);
 				oci_free_statement($ordre);
 				oci_close($connexion);
+				if (!empty($_FILES['document']['name'])){
+							//Enregistre le fichier 
+					$uploaddir = 'files/';
+					$filename = $_FILES['document']['name'];
+					$ext = pathinfo($filename, PATHINFO_EXTENSION); 
+					$uploadfile = $uploaddir .   $pseudo."." .$ext;
+					
+					move_uploaded_file($_FILES['document']['tmp_name'], $uploadfile);
+				}
+
 				header("Location: inscription.php?inscr=reussie");
 			}
+
+			
 		}
 
 	}
