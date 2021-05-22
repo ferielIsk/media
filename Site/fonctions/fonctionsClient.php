@@ -55,7 +55,7 @@
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$reussi = false;
 		//Si on a modifié le pseudo
-		if ($_REQUEST['pseudo']!=$_SESSION['pseudo'] and !empty($_REQUEST['pseudo'])){
+		if (!empty($_REQUEST['pseudo']) and $_REQUEST['pseudo']!=$_SESSION['pseudo'] ){
 			$_SESSION['pseudo'] = $_REQUEST['pseudo'];
 			$txt = "update client "
 					." set pseudo = :pseudo "
@@ -68,7 +68,7 @@
 	    	$reussi = true;
 		}
 		//Si on a modifié l'adresse
-		if ($_REQUEST['adresse']!=$_SESSION['adresse'] and !empty($_REQUEST['adresse'])){
+		if (!empty($_REQUEST['adresse']) and $_REQUEST['adresse']!=$_SESSION['adresse'] ){
 			$_SESSION['adresse'] = $_REQUEST['adresse'];
 			$txt = "update client "
 					." set adresse = :adresse "
@@ -82,7 +82,7 @@
 		}
 
 		//Si on a modifié le tel
-		if ($_REQUEST['tel']!=$_SESSION['tel'] and !empty($_REQUEST['tel'])){
+		if (!empty($_REQUEST['tel']) and $_REQUEST['tel']!=$_SESSION['tel'] ){
 			$_SESSION['tel'] = $_REQUEST['tel'];
 			$txt = "update client "
 					." set tel = :tel "
@@ -111,7 +111,7 @@
 		}
 							/*	SEULEMENT GESTIONNAIRE DE COMPTES*/
 		//Si on a modifié l'adresseMail
-		if ($_REQUEST['mail']!=$_SESSION['adresseMail'] and !empty($_REQUEST['mail'])){
+		if (!empty($_REQUEST['mail']) and $_REQUEST['mail']!=$_SESSION['adresseMail'] ){
 			$_SESSION['adresseMail'] = $_REQUEST['mail'];
 			$txt = "update compte "
 					." set adresseMail = :mail "
@@ -125,7 +125,7 @@
 		}
 
 		//Si on a modifié le prenom
-		if ($_REQUEST['prenom']!=$_SESSION['prenom'] and !empty($_REQUEST['prenom'])){
+		if (!empty($_REQUEST['prenom']) and $_REQUEST['prenom']!=$_SESSION['prenom']  ){
 			$_SESSION['prenom'] = $_REQUEST['prenom'];
 			$txt = "update compte "
 					." set prenom = :prenom "
@@ -140,7 +140,7 @@
 
 
 		//Si on a modifié le nom
-		if ($_REQUEST['nom']!=$_SESSION['nom'] and !empty($_REQUEST['nom'])){
+		if (!empty($_REQUEST['nom']) and $_REQUEST['nom']!=$_SESSION['nom']  ){
 			$txt = "update compte "
 					." set nom = :nom "
 					." where adresseMail = :adresseMail";
