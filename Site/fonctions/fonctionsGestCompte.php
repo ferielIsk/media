@@ -54,7 +54,7 @@
 			or empty($_POST['numero']) or empty($_POST['motDepasse']) 
 		    or empty($_POST['type']) ){
 
-				echo "<div style='position:absolute; top: 25vh; color:crimson;left: 40%;font-size:32px;  '>All fields must be filled!</div>";
+				echo "<div style='position:absolute; top: 30vh; color:crimson;left: 40%;font-size:32px;  '>All fields must be filled!</div>";
 
 			}else{
 
@@ -83,14 +83,18 @@
 								
 
 				$ordre = ociparse($connexion, $texte);
-				ociexecute($ordre);
+				$req1 = ociexecute($ordre);
 				
 				if ($type=="Client"){
 					$texte = "insert into client values('Activated','".$pseudo."','".$mail."', 0)";
 					$ordre = ociparse($connexion, $texte);
-					ociexecute($ordre);
+					$req2 =ociexecute($ordre);
 				
 				}
+				if ($req1 and $req2)
+					echo "<div style='position:absolute; top: 30vh;left: 40%;font-size:32px; color: #588ebb; '> Successful! <div>";
+				else 
+					echo "<div style='position:absolute; top: 30vh;left: 40%;font-size:32px; color: #588ebb; '> Error occured! <div>";
 				ocilogoff($connexion);
 			}
 

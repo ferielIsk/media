@@ -50,7 +50,7 @@
 				header("Location: connexion.php");
 			}
 
-			echo '<div class="welcome" > Welcome ' . ucfirst ($_SESSION['prenom']) .'   '. ucfirst ($_SESSION['nom']).'</div>';
+			echo '<div class="welcome" style="margin-top:40px"> Welcome ' . ucfirst ($_SESSION['prenom']) .'   '. ucfirst ($_SESSION['nom']).'</div>';
 			echo '<div id="boutonSeDeco">'
 			.' <a href="monCompte.php?deconnexion=true" > Sign out <i class="fas fa-sign-out-alt"></i></a>'
 			.' </div>';
