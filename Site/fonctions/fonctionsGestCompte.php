@@ -90,6 +90,17 @@
 	}
 
 	function supprimer_compte() {
+		
+    	if(isset($_POST['supprimeCompte']) ){
+    		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
+    		$texte = " delete client "
+      				." where adresseMail = :mail ";
+      		$ordre2 = oci_parse($connexion, $texte); 
+      		oci_bind_by_name($ordre2, ":mail", $_REQUEST['adresse_supp']);
+      		oci_execute($ordre2);
+	    	oci_free_statement($ordre2);
+	    	oci_close($connexion);
+    	}
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$txt = "select client.adresseMail, pseudo, nom, prenom "
 			." from client, compte "
@@ -115,16 +126,6 @@
     	oci_free_statement($ordre);
     	oci_close($connexion);
 
-    	if(isset($_POST['supprimeCompte']) ){
-    		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-    		$texte = " delete client "
-      				." where adresseMail = :mail ";
-      		$ordre2 = oci_parse($connexion, $texte); 
-      		oci_bind_by_name($ordre2, ":mail", $_REQUEST['adresse_supp']);
-      		oci_execute($ordre2);
-	    	oci_free_statement($ordre2);
-	    	oci_close($connexion);
-    	}
 	}
 
 
@@ -145,7 +146,7 @@
     		}
     	}
     	
-    			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
+    	$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$txt = "select pseudo, etat, client.adresseMail, prenom, nom "
 			." from client, compte "
 			." where etat != 'Actif'  and client.adresseMail = compte.adresseMail";

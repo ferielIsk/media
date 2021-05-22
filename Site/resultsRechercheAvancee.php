@@ -33,6 +33,8 @@
         <?php
             
           echo '<div class="main"></br></br></br><h1> Result(s) : </h1></br>';
+          
+     	  
             
           $ref =$_REQUEST['workref'];
           $workName = $_REQUEST['workName'];
@@ -40,7 +42,7 @@
           $editionName = $_REQUEST['editionName'];
           $type = $_REQUEST['type'];
 
-     
+     	  
         
           if (empty($ref) and empty($workName)and empty($authorName) and empty($editionName)){
                 
@@ -50,7 +52,7 @@
             
           else{
                 
-              $connexion = oci_connect('c##fiskoun_a', 'fiskoun_a', 'dbinfo');
+              $connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 
 
               //construction de la requete 
@@ -60,7 +62,7 @@
               . "from oeuvre o, createurOeuvre co,editionOeuvre eo "
               . "where o.ido= co.ido and o.ido= eo.ido";
 
-               if(!empty($ref)) {
+              if(!empty($ref)) {
                   $requete = $requete . " and o.reference = :ref ";
               }
 
@@ -110,29 +112,26 @@
 
       
               oci_execute($ressource);
-              
-              if (oci_fetch_array($ressource, OCI_BOTH) ==false){
-        
-            echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:26px; color:#A5749D"> 
-            Sorry ,your research does not have result !</div>';
-        
-            }
-            
-            else{
-      
-                    echo '<table  id="compteClient">';
-                    echo "<tr><th> Reference </th><th> Title </th><th> Type</th>
-                          <th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
+              $test = ($row = oci_fetch_array($ressource, OCI_BOTH) );
+			  if ($test ==false){
+				  echo '<div   class="request" style="margin-top:9vh; margin-left:20%; font-size:26px; color:#A5749D"> 
+			  	      			Sorry, There is no product matching your request.</div>';
 
-              
-                    while (($row = oci_fetch_array($ressource, OCI_BOTH)) !=false){ 
+			  }else{
+				  echo '<table  id="compteClient" >';
+				  echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
+					
+		          while ($test !=false) {
+		         
                      
-                    echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
+                     echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
                              .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
-                             .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">Show more...<i class="fas fa-plus-circle"></i></button>';             
-                    }
+                             .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">Show more...<i class="fas fa-plus-circle"></i></button>';  
+                      $test = ($row =oci_fetch_array($ressource, OCI_BOTH) );       
+                                        
+                  }
                                   
-                    echo '</table>';
+                  echo '</table>';
                     
             }
           

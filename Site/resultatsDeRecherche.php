@@ -40,13 +40,13 @@
 	<?php
 	    // si le champ de la recherche est vide
 		if(empty($_REQUEST['recherche'])){
-			echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px">Please, enter a keyword !</div>';
+			echo '<div   class="request" style="margin-top:9vh; margin-left:20%; font-size:32px">Please, enter a keyword !</div>';
 		}
 		else{
 	 
 			$mot = $_REQUEST['recherche'];
 			
-			echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px"> Result(s) for : "'. $mot.'" </div>';
+			echo '<div   class="request" style="margin-top:9vh; margin-left:20%; font-size:32px"> Result(s) for : "'. $mot.'" </div>';
 			
 			$mot="%".$mot."%";
 			//connexion à la BD
@@ -72,25 +72,22 @@
 		   
 		    //si la requete n a pas de resulat
 		    
-		    if (oci_fetch_array($ordre, OCI_BOTH) ==false){
+		    $test = ($row = oci_fetch_array($ordre, OCI_BOTH));
+		    if ($test ==false){
+		        echo '<div   class="request" style="margin-top:9vh; margin-left:20%; font-size:26px; color:#A5749D"> 
+		      	  Sorry, There is no product matching your request.</div>';
 		    
-		        echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:26px; color:#A5749D"> 
-		        Sorry ,your research does not have result !</div>';
-		    
-		    }
-
-		    
-		    
-            else{
+		    }else{
                 echo '<table  id="compteClient" style="margin-left:20%">';
 		        echo "<tr><th> Reference </th><th> Title </th><th> Type</th><th> Publisher </th> <th> Creator </th> <th>Cost (€)</th></tr>";
 		            
-		         while (($row = oci_fetch_array($ordre, OCI_BOTH)) !=false) {
+		         while ($test !=false) {
 		         
 	                    echo '<tr> <td>'.$row[0].'</td><td>'. $row[1].'</td><td>'. $row[2].'</td>'
 	                   		 .'<td>'.$row[4].'</td>'.'<td>'.$row[5].'</td>'.'<td>'.$row[3].'</td>'
 	                   		 .'<td><button class="btn" style="width:100%; height:100%;" onclick="descrptionOeuvre('.$row[0].')">
 	                   		 Show more...<i class="fas fa-plus-circle"></i></button>';
+	                   	$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
 
 		          }
 		          echo '</table>';

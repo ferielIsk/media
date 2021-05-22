@@ -89,7 +89,11 @@
 				//Appel à la procédure ajouteOeuvre
 				$texte = "begin ajouteOeuvre(".$reference.", '".$titre."', '".$description."', '".$type."', ".$nbExemplaires.", ".$prixAchat.", ".$prixLocation.", "."TO_DATE('".$dateParution."','yyyy-mm-dd'),'".$nomEdition."', '".$nomCreateur."', "."TO_DATE('".$dateEdition."','yyyy-mm-dd'),'". $profession."') ; end;";
 				$ordre = oci_parse($connexion, $texte);
-				oci_execute($ordre);
+				echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
+		  		if (oci_execute($ordre))
+		  			echo " Successful !  </div>";
+				else 
+					echo " Error occured ! </div>";
 				oci_free_statement($ordre);
 		    	oci_close($connexion);
 			}

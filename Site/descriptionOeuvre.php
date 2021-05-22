@@ -11,7 +11,7 @@
 	<body>
     	 <! -- Début Barre principale -->
 
-				<ul class="barMenu">
+				<ul class="barMenu" style="margin-top:8px">
 				  <li><a href="index.php">Home</a></li>
 				  <li><a href="advancedResearch.php">Advanced research</a></li>
 				  <li><a href="about.php">About</a></li>
@@ -110,7 +110,7 @@
 		if ($test==false)
 			echo "<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; 	color: #588ebb;'> Cette oeuvre n'existe pas. </div>";
 		else{
-            echo'<div class="col-xs-5" style="border:0px solid gray; font-size:16px;margin-left: 30px"> <h1>' . $row[0] . '</h1><br>';
+            echo'<div class="col-xs-5" style="border:0px solid gray; font-size:16px;margin-left: 130px"> <h1>' . $row[0] . '</h1><br>';
 
             echo'<b> Type: </b> ' . $row[2].'<br>';
             echo'<b> Release date: </b> ' . date('d-m-y',strtotime($row[3])).'<br>';
