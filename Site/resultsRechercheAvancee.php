@@ -42,8 +42,9 @@
      
         
           if (empty($ref) and empty($workName)and empty($authorName) and empty($editionName)){
-
-              echo "Please, enter one or more keywords !";
+                
+             echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px">Please, enter one or more keywords !</div>';
+              
            }
             
           else{
