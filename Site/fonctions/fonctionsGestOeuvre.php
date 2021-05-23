@@ -105,8 +105,8 @@
 		echo '<div id="formCompte">
 
             <form method="post" action="monCompte.php?inf=supprimerOeuvre">
-            	ID of product to delete: <br>
-                <input type="number" name="ido"/>
+            	Reference of product to delete: <br>
+                <input type="number" name="reference"/>
 
                 <input type="submit" name="oeuvreSuppForm" value="Validate"/></br></br>
             </form>
@@ -115,17 +115,17 @@
         //Si le formulaire a été validé
 		if(isset($_POST['oeuvreSuppForm']) ){
 			//On vérifie que tous les champs ont bien été remplis
-			if ( empty($_REQUEST['ido']) ){
+			if ( empty($_REQUEST['reference']) ){
 				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Enter an identifier! <div>";
 			}else{
-				$ido = $_REQUEST['ido'];
+				$reference = $_REQUEST['reference'];
 				//connexion à la BD
 				$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 				$texte = "update oeuvre "
 					." set est_disponible = 0 "
-					." where ido = :ido";
+					." where reference = :reference";
 	      		$ordre2 = oci_parse($connexion, $texte);
-	      		oci_bind_by_name($ordre2, ":ido", $_REQUEST['ido']);
+	      		oci_bind_by_name($ordre2, ":reference", $_REQUEST['reference']);
 	      		if(oci_execute($ordre2))
 	      				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Product deleted! <div>";;
 		    	oci_free_statement($ordre2);
