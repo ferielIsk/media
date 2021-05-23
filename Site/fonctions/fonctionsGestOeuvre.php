@@ -167,8 +167,8 @@
 						Identifier of product : '.$row[0].' <br><br>
 
 		                <label>Reference</label>
-		                <input type="hidden" name="referenceAncienne" value="'.$row[1].'"/>
-		                <input type="number" name="reference" value="'.$row[1].'"/> </br></br>
+		                <input type="hidden" name="referenceAncienne" value="'.$row[1].'" disabled/>
+		                <input type="number" name="reference" value="'.$row[1].'" disabled/> </br></br>
 
 		                <label>Title</label>
 		                <input type="hidden" name="titreAncienne" value="'.$row[2].'"/>
