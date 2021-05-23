@@ -33,8 +33,8 @@
         <div class="formulaireResearch">
             <form method="post" action="resultsRechercheAvancee.php">
                 Work's reference : </br>
-                <input type="text" name="workref" pattern="[A-Za-z-0-9]{1,10}" 
-                title ="must contain only letters and numbers; no more than 10 characters"> </input> <br><br>
+                <input type="text" name="workref" pattern="[0-9]{1,20}" 
+                title ="must contain only numbers; no more than 20 characters"> </input> <br><br>
                 Work's name : </br>
                 <input type="text" name="workName"pattern="[A-Za-z-0-9]{1,10}" 
                 title ="must contain only letters and numbers; no more than 10 characters"> </input> <br><br>
