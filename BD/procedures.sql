@@ -262,7 +262,7 @@ end;
 
 -- Client a rendue l'oeuvre d'un emprunt
 create or replace procedure aRenduOeuvre(
-    l_ido oeuvre.ido%type,
+    la_reference oeuvre.reference%type,
     l_ide emprunt.ide%type)
 is
     le_nbExemplaires oeuvre.nbExemplaires%type;
@@ -271,12 +271,12 @@ is
 begin
     update panier
       set rendue = 1
-      where ido = l_ido
+      where reference = la_reference
         and ide = l_ide;
     select nbExemplaires
       into le_nbExemplaires
       from oeuvre
-      where ido = l_ido;
+      where reference = la_reference;
     update oeuvre
       set nbExemplaires=le_nbExemplaires+1;
 

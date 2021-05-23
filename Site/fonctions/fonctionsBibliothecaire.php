@@ -63,8 +63,8 @@
 		if( empty($_REQUEST['retour']) ) {
 			echo '<div id="formCompte">
 			<form method="post" action="monCompte.php?inf=enregistrerRetour">
-							 ID of the product returned: <br> 
-							<input type="number" name ="ido_retour" id="ido_retour" > </input><br><br>
+							 Reference of the product returned: <br> 
+							<input type="number" name ="ref_retour" id="ref_retour" > </input><br><br>
         					
         					 ID of the borrowing: <br>
         					<input type="number" name ="ide_retour" id="ide_retour" > </input><br><br>
@@ -73,9 +73,9 @@
         					</form></div>';
         } else {
         	$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
-			$texte = "begin aRenduOeuvre(:ido, :ide) ; end;";
+			$texte = "begin aRenduOeuvre(:ref, :ide) ; end;";
       		$ordre = oci_parse($connexion, $texte); 
-      		oci_bind_by_name($ordre, ":ido", $_REQUEST['ido_retour']);
+      		oci_bind_by_name($ordre, ":ref", $_REQUEST['ref_retour']);
       		oci_bind_by_name($ordre, ":ide", $_REQUEST['ide_retour']);
       		
   			echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
