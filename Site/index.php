@@ -27,7 +27,8 @@
 			  <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,10}" 
 			  title =" keyword must contain only letters and numbers ! no more than 10 characters" style="width: 50%;"> </input>
 			  <button  style="	background-color: #f2f2f2; border: none; color: darkgrey;padding: 12px 30px; 
-			  					font-size: 16px; cursor: pointer; "><i class="fas fa-search"></i></button>
+			  					font-size: 16px; cursor: pointer; "><i class="fas fa-search"></i></button><br><br>
+			  <a class='linkR' href='inscription.php'>Don't have an account yet? Sign Up</a><br>
 			</form>
 		</div>
 		

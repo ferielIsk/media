@@ -119,9 +119,23 @@
 			$txt = "select * from compte, client where compte.adresseMail='".$mail."' or pseudo='".$pseudo."'";
 			$ordreC = oci_parse($connexion, $txt);
 			oci_execute($ordreC);
+			
 			if (($row = oci_fetch_array($ordreC, OCI_BOTH)) !=false){
 				header("Location: inscription.php?inscr=echec");
 			}else{
+			
+				if (!empty($_FILES['document']['name'])){
+						//Enregistre le fichier 
+						
+						$uploaddir = 'files/';
+						$filename = $_FILES['document']['name'];
+						$ext = pathinfo($filename, PATHINFO_EXTENSION); 
+						$uploadfile = $uploaddir .   $pseudo."." .$ext;
+						
+						
+						
+						move_uploaded_file($_FILES['document']['tmp_name'], $uploadfile);
+				}
 				//Appel à la procédure ajouteClient
 
 				$texte = "begin ajouteClient('".$mail."', '".$nom."', '"
@@ -133,15 +147,8 @@
 				oci_execute($ordre);
 				oci_free_statement($ordre);
 				oci_close($connexion);
-				if (!empty($_FILES['document']['name'])){
-							//Enregistre le fichier 
-					$uploaddir = 'files/';
-					$filename = $_FILES['document']['name'];
-					$ext = pathinfo($filename, PATHINFO_EXTENSION); 
-					$uploadfile = $uploaddir .   $pseudo."." .$ext;
-					
-					move_uploaded_file($_FILES['document']['tmp_name'], $uploadfile);
-				}
+				
+				
 
 				header("Location: inscription.php?inscr=reussie");
 			}
