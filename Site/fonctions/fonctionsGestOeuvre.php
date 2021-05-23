@@ -137,12 +137,12 @@
 
 
 	function modifier_oeuvre() {
-		if( empty($_REQUEST['ido']) ) {
+		if( empty($_REQUEST['ref']) ) {
 			echo '<div id="formCompte" >
 
         	ID of the product to edit: 
         	<form method="post" action="monCompte.php?inf=modifierOeuvre">
-        	<input type="number" name ="ido" id="ido"> </input>
+        	<input type="number" name ="ref" id="ref"> </input>
 
         	<input type="submit" name="affiche" value="Validate"/>
         	</form></div>';
@@ -151,9 +151,9 @@
 
     		$texte = " select ido, reference, titre, description, type, nbExemplaires, prixAchat,prixLocation, dateParution "
     				. " from oeuvre "
-      				." where ido = :ido ";
+      				." where ref = :ref ";
       		$ordre = oci_parse($connexion, $texte);
-      		oci_bind_by_name($ordre, ":ido", $_REQUEST['ido']);
+      		oci_bind_by_name($ordre, ":ref", $_REQUEST['ref']);
       		oci_execute($ordre);
       		$test = ($row = oci_fetch_array($ordre, OCI_BOTH));
         	if($test==false)
