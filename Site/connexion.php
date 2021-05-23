@@ -113,8 +113,8 @@
             	$txt =
 				    " select co.mdp, co.adresseMail,  co.nom, co.prenom, co.tel, co.adresse, co.dateDeNaissance, cl.pseudo, cl.etat "
 				    . "from client cl, compte co "
-				    . "where co.type = :type and cl.etat != 'In_validation_process' and  (co.adresseMail = :login "
-				    . "   or (cl.pseudo = :login and cl.adresseMail = co.adresseMail)) ";
+				    . "where co.type = :type and cl.etat != 'In_validation_process' and  cl.adresseMail = co.adresseMail and "
+				    . "(co.adresseMail = :login  or cl.pseudo = :login ) ";
             }else{
                 $txt =
 				    " select co.mdp, co.adresseMail, co.nom, co.prenom, co.tel, co.adresse, co.dateDeNaissance "
