@@ -44,7 +44,7 @@
 
      	  
         
-          if (empty($ref) and empty($workName)and empty($authorName) and empty($editionName)){
+          if (empty($ref) and empty($workName)and empty($authorName) and empty($editionName) and ($type =="All")){
                 
              echo '<div   class="request" style="margin-top:10vh; margin-left:25%; font-size:32px">Please, enter one or more keywords !</div>';
               
