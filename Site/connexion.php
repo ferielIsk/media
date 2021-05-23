@@ -44,44 +44,56 @@
 					else
 						if($_REQUEST['error']==2 or $_REQUEST['error']==3 )
 							echo "Login or password incorrect.";
-			?>
+							
+				//Si c'est pour changer le mdp 			
+        		if (!empty($_REQUEST['mdpF'])){
+            		echo '<form method="post" action="connexion.php?mdpF=true">
 
+        				<div style="position:absolute; left:26%">Enter your email<br></div>
+            			<br><br><input type="text" name="mail" placeholder="xxxxxxxx@xxx.xxx" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please, enter a valid email address" >  </input><br><br>
+            			<div style="position:absolute; left:26%">New Password<br></div>
+            			<br><br><input type="password" name="mdpN" placeholder="**********" pattern=".{8,}" title=" Password must contain at least eight or more characters">  </input><br><br>
+            			<input type="submit" name="submitPass" value="Change password"> </input></form>';
 
+            	}else{
+					//Si c'est pour se connecter 
 
+	
+					echo '<form method="post" action="connexion.php">
 
-        	<form method="post" action="connexion.php">
+						<div style="position:absolute; left:26%">Login<br></div>
+				    	<br><br><input type="text" name="login" placeholder="xxxxxxxx@xxx.xxx">  </input><br><br>
+				    	<div style="position:absolute; left:26%">Password<br></div>
+				    	<br><br><input type="password" name="mdp" placeholder="**********">  </input><br><br>';
 
-        		<div style="position:absolute; left:26%">Login<br></div>
-            	<br><br><input type="text" name="login" placeholder="xxxxxxxx@xxx.xxx">  </input><br><br>
-            	<div style="position:absolute; left:26%">Password<br></div>
-            	<br><br><input type="password" name="mdp" placeholder="**********">  </input><br><br>
-
-            	<?php
-            		//Si page de connexion simple on affiche un bouton pour pouvoir acceder à la version du personnel
-            		if (empty ($_REQUEST['personnel']))
-            			echo "<input type='submit' name='particulier' value='Particular'> </input>";
-            			
-            		else
-            			
-            			if ($_REQUEST['personnel']==true)
+				    			
+		    		//Si page de connexion simple on affiche un bouton pour pouvoir acceder à la version du personnel
+		    		if (empty ($_REQUEST['personnel']))
+		    			echo "<input type='submit' name='particulier' value='Particular'> </input>";
+		    			
+		    		else{
+		    			if ($_REQUEST['personnel']==true)
 							echo "<label style='position:absolute; left:23%' for='fonction'> Function :</label><br><br>"
 								."<select id='fonction' name='fonction'>"
 									."<option value='Account_manager'>Account manager</option>"
 									."<option value='Multimedia_manager'>Multimedia manager</option>"
 									."<option value='Librarian'>Librarian</option>"
 								."</select></br></br></br>";
+					}
 								
-            	?>
-
-				<?php 
-				if (!empty ($_REQUEST['personnel']))echo "<input type='submit' name='retour' value='Return'> </input>";
-				?>
-            	<input type="submit" name="submit" value="Sign in"> </input>
-        	</form>
+ 					//Si c'est la page du personnel on affiche un bouton retour
+					if (!empty ($_REQUEST['personnel']))
+						echo "<input type='submit' name='retour' value='Return'> </input>";
+				
+            		echo '<input type="submit" name="submit" value="Sign in"> </input></form>';
         	
-        	<?php
-        		if (empty ($_REQUEST['personnel']))
-        			echo "<a class='linkR' href='inscription.php'>Don't have an account yet? Sign Up</a><br>";
+        			
+        			//Si c'est la page client on affiche lien pour s'inscrire ou mdp oublié
+					if (empty ($_REQUEST['personnel'])){
+						echo "<a class='linkR' href='inscription.php'>Don't have an account yet? Sign Up</a><br>";
+						echo "<a class='linkR' href='connexion.php?mdpF=true'>Forgot password?</a><br>";
+					}
+				}
         	?>
         </div>
     </body>
@@ -158,5 +170,23 @@
             oci_free_statement($ordre);
             oci_close($connexion);
         }
+	}
+	if (isset($_REQUEST['submitPass'])){
+		if (empty ($_REQUEST['mdpN']) or empty($_REQUEST['mail']))
+			header ("Location: connexion.php?mdpF=true&error=1");
+		else {
+			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
+			$txt = "update compte set mdp = '".password_hash($_REQUEST['mdpN'], PASSWORD_DEFAULT). "' where adresseMail='"
+					.$_REQUEST['mail']."'";
+			$ordre = oci_parse($connexion, $txt);
+			echo '<div class="request" style="position:absolute; top:24vh; margin-left:40%; font-size:32px; color: steelblue;">';
+			if (oci_execute($ordre))
+				echo 'Password changed ! </div>';
+			else
+				echo 'Error! </div>';
+			
+			oci_free_statement($ordre);
+			oci_close($connexion);
+		}
 	}
 ?>

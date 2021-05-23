@@ -62,11 +62,11 @@
                 <input type="date" name="dateDeNaissance" required /></br></br>
 
                 <label style="position:absolute; left:10%">Phone number</label>
-                <input type="text" name="numero"pattern="[0-9]{10}"title="Phone number must stard with '0' and contain 10 numbers" required/> 
+                <input type="text" name="numero"pattern="[0-9]{10}" title="Phone number must stard with '0' and contain 10 numbers" required/> 
                   </br></br>
 
                 <label style="position:absolute; left:10%">Email</label>
-                <input type="email" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"title="Please, enter a valid email address" required /></br></br>
+                <input type="email" name="mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please, enter a valid email address" required /></br></br>
 
                 <label style="position:absolute; left:10%">Password</label>
                 <input type="password" name="motDepasse" pattern=".{8,}" title=" Password must contain at least eight or more characters" required /></br></br>
@@ -130,7 +130,7 @@
 
 
 				$ordre = oci_parse($connexion, $texte);
-				ociexecute($ordre);
+				oci_execute($ordre);
 				oci_free_statement($ordre);
 				oci_close($connexion);
 				if (!empty($_FILES['document']['name'])){

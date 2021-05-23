@@ -390,7 +390,7 @@
 	}
 	function validerPanier(){
 		if ($_SESSION['etat']=='Suspended' or $_SESSION['etat']=='In_validation_process'){
-			echo "	<div style='position:absolute; top: 50vh;left: 40%;text-align: center; font-size:32px; color: #588ebb; '> Your account is remaining in : <br> ". $_SESSION['etat'] ."</div>";
+			echo "	<div style='position:absolute; top: 30vh;left: 40%;text-align: center; font-size:32px; color: #588ebb; '> Your account is remaining in : <br> ". $_SESSION['etat'] ."</div>";
 			return -1;
 		}else{
 			$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
@@ -398,8 +398,7 @@
 			$ordre = oci_parse($connexion, $txt);
 		    oci_bind_by_name($ordre, ":ide", $_REQUEST['ide']);
 		    oci_bind_by_name($ordre, ":pseudo", $_SESSION['pseudo']);
-		    oci_bind_by_name($ordre, ":msg", $_msg);
-		    echo $_msg;
+		    oci_bind_by_name($ordre, ":msg", $msg, 50);
 		    oci_execute($ordre);
 		}
 		return 1;
