@@ -346,57 +346,58 @@ end;
 
 
 -- Permet de creer/mettre a jour toutes les penalites d'aujourdhui
-create or replace procedure creationEtMAJPenalites
-is
-    cursor cEmprunt is
-      select ido, emprunt.ide, idcClient
-        from emprunt, panier
-        where reglee = 1
-          and emprunt.ide = panier.ide
-          and sysdate>(dateDebutEmprunt + 15)
-          and rendue = 0;
-    cursor cLibrarian is
-      select adresseMail
-      from compte
-      where type = 'Librarian';
-    l_emprunt cEmprunt%rowtype;
-    l_idp penalite.idp%type;
-    l_adresseMailBib compte.adresseMail%type;
-begin
-    l_idp:=-1;
-    open cEmprunt; 
-    open cLibrarian;
-    fetch cEmprunt into l_emprunt;
-    while cEmprunt%found loop
-        -- si la penalite existe deja on lui rajoute 1euro
-      for x in (
-          select idp, montant
-            from penalite
-            where ide = l_emprunt.ide
-              and ido = l_emprunt.ido)
-          loop
-            l_idp:=x.idp;
-            update penalite
-              set montant = x.montant+1
-              where idp = l_idp;
-          end loop;
-      -- Si la penalite n'exite pas on la cree
-      if l_idp=(-1) then
-        l_idp:= seq_penalite.nextval;
-        insert into penalite values (l_idp, l_emprunt.ide, l_emprunt.ido, 1);
-      end if;
-
-      -- On ajoute la penalite aux biblothecaires
-      fetch cLibrarian into l_adresseMailBib;
-      while cLibrarian%found loop
-        insert into penaliteBibliothecaire values (l_idp, l_adresseMailBib);
-        fetch cLibrarian into l_adresseMailBib;
-      end loop;
+  create or replace procedure creationEtMAJPenalites
+  is
+      cursor cEmprunt is
+        select ido, emprunt.ide, idcClient
+          from emprunt, panier
+          where reglee = 1
+            and emprunt.ide = panier.ide
+            and sysdate>(dateDebutEmprunt + 15)
+            and rendue = 0;
+      cursor cLibrarian is
+        select adresseMail
+        from compte
+        where type = 'Librarian';
+      l_emprunt cEmprunt%rowtype;
+      l_idp penalite.idp%type;
+      l_adresseMailBib compte.adresseMail%type;
+  begin
+      l_idp:=-1;
+      open cEmprunt; 
+      open cLibrarian;
       fetch cEmprunt into l_emprunt;
-    end loop;
-    close cEmprunt; close cLibrarian;
-end;
-/
+      while cEmprunt%found loop
+          -- si la penalite existe deja on lui rajoute 1euro
+        for x in (
+            select idp, montant
+              from penalite
+              where ide = l_emprunt.ide
+                and ido = l_emprunt.ido)
+            loop
+              l_idp:=x.idp;
+              update penalite
+                set montant = x.montant+1
+                where idp = l_idp;
+            end loop;
+        -- Si la penalite n'exite pas on la cree
+        if l_idp=(-1) then
+          l_idp:= seq_penalite.nextval;
+          insert into penalite values (l_idp, l_emprunt.ide, l_emprunt.ido, 1);
+        
+
+          -- On ajoute la penalite aux biblothecaires
+          fetch cLibrarian into l_adresseMailBib;
+          while cLibrarian%found loop
+            insert into penaliteBibliothecaire values (l_idp, l_adresseMailBib);
+            fetch cLibrarian into l_adresseMailBib;
+          end loop;
+        end if;
+        fetch cEmprunt into l_emprunt;
+      end loop;
+      close cEmprunt; close cLibrarian;
+  end;
+  /
 
 
 --          Client
