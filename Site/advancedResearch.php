@@ -22,8 +22,8 @@
                   ?>
                 </ul>
                 <form class="barMenu" method="post" action="resultatsDeRecherche.php">
-                 <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,10}" 
-                         title =" keyword must contain only letters and numbers ! no more than 10 characters"> </input>
+                 <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,20}" 
+                         title =" keyword must contain only letters and numbers ! no more than 20 characters"> </input>
                   <button class="boutonBarre"><i class="fas fa-search"></i></button>
                 </form>
         <! -- Fin Barre principale -->
