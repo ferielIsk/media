@@ -140,7 +140,7 @@
 		if( empty($_REQUEST['ref']) ) {
 			echo '<div id="formCompte" >
 
-        	ID of the product to edit: 
+        	Reference of the product to edit: 
         	<form method="post" action="monCompte.php?inf=modifierOeuvre">
         	<input type="number" name ="ref" id="ref"> </input>
 
@@ -151,7 +151,7 @@
 
     		$texte = " select ido, reference, titre, description, type, nbExemplaires, prixAchat,prixLocation, dateParution "
     				. " from oeuvre "
-      				." where ref = :ref ";
+      				." where reference = :ref ";
       		$ordre = oci_parse($connexion, $texte);
       		oci_bind_by_name($ordre, ":ref", $_REQUEST['ref']);
       		oci_execute($ordre);
