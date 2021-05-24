@@ -364,7 +364,8 @@ is
     l_adresseMailBib compte.adresseMail%type;
 begin
     l_idp:=-1;
-    open cEmprunt;
+    open cEmprunt; 
+    open cLibrarian;
     fetch cEmprunt into l_emprunt;
     while cEmprunt%found loop
         -- si la penalite existe deja on lui rajoute 1euro
@@ -393,10 +394,9 @@ begin
       end loop;
       fetch cEmprunt into l_emprunt;
     end loop;
-    close cEmprunt;
+    close cEmprunt; close cLibrarian;
 end;
 /
-
 
 
 --          Client
