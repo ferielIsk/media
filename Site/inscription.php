@@ -21,8 +21,8 @@
 				  ?>
 				</ul>
 				<form class="barMenu" method="post" action="resultatsDeRecherche.php">
-				 <input type="text" name="recherche" placeholder="Search.." pattern="[A-Za-z0-9]{1,10}" 
- 			            title =" keyword must contain only letters and numbers ! no more than 10 characters"> 
+				 <input type="text" name="recherche" placeholder="Search.."pattern="[A-Za-z0-9\s/]{1,20}" 
+			      title =" keyword must contain only letters and numbers ! no more than 10 characters"> </input> 
  			     </input>
 				  <button class="boutonBarre"><i class="fas fa-search"></i></button>
 				</form>
@@ -53,10 +53,10 @@
                 <input type="text" name="prenom" pattern="[A-Za-z _]{1,20}" title ="First name must contain only letters and the underscore; no more than 20 characters" required /> </br></br>
 
                 <label style="position:absolute; left:10%">Username</label>
-                <input type="text" name="pseudo" pattern="[A-Za-z0-9_]{1,10}" title ="Username must contain only letters,numbers and the underscore; no more than 10 characters" required /> </br></br>
+                <input type="text" name="pseudo" pattern="[A-Za-z0-9_]{1,20}" title ="Username must contain only letters,numbers and the underscore; no more than 10 characters" required /> </br></br>
 
                 <label style="position:absolute; left:10%">Adresse</label>
-                <input type="text" name="adresse" pattern="[A-Za-z-0-9_,/\s/]{1,60}" title ="adress must contain only letters,numbers,commas and the underscore; no more than 60 characters" required/> </br></br>
+                <input type="text" name="adresse" pattern="[A-Za-z-0-9_,/\s/]{1,80}" title ="adress must contain only letters,numbers,commas and the underscore; no more than 60 characters" required/> </br></br>
 
                 <label style="position:absolute; left:10%">Date of birth</label>
                 <input type="date" name="dateDeNaissance" required /></br></br>
