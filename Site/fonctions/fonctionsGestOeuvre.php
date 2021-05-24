@@ -89,7 +89,7 @@
 				//Appel à la procédure ajouteOeuvre
 				$texte = "begin ajouteOeuvre(".$reference.", '".$titre."', '".$description."', '".$type."', ".$nbExemplaires.", ".$prixAchat.", ".$prixLocation.", "."TO_DATE('".$dateParution."','yyyy-mm-dd'),'".$nomEdition."', '".$nomCreateur."', "."TO_DATE('".$dateEdition."','yyyy-mm-dd'),'". $profession."') ; end;";
 				$ordre = oci_parse($connexion, $texte);
-				echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
+				echo "<div style='position:absolute; top: 30vh;left: 35%;font-size:32px; color: #588ebb; '>";
 		  		if (oci_execute($ordre))
 		  			echo " Successful !  </div>";
 				else 
@@ -116,7 +116,7 @@
 		if(isset($_POST['oeuvreSuppForm']) ){
 			//On vérifie que tous les champs ont bien été remplis
 			if ( empty($_REQUEST['reference']) ){
-				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Enter an identifier! <div>";
+				echo "<div style='position:absolute; top: 30vh;left: 40%;font-size:32px; color: #588ebb; '> Enter an identifier! <div>";
 			}else{
 				$reference = $_REQUEST['reference'];
 				//connexion à la BD
@@ -127,7 +127,7 @@
 	      		$ordre2 = oci_parse($connexion, $texte);
 	      		oci_bind_by_name($ordre2, ":reference", $_REQUEST['reference']);
 	      		if(oci_execute($ordre2))
-	      				echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '> Product deleted! <div>";;
+	      				echo "<div style='position:absolute; top: 30vh;left: 40%;font-size:32px; color: #588ebb; '> Product deleted! <div>";;
 		    	oci_free_statement($ordre2);
 		    	oci_close($connexion);
 

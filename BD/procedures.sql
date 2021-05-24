@@ -268,10 +268,15 @@ is
     le_nbExemplaires oeuvre.nbExemplaires%type;
     le_nbOeuvresEmpruntees client.nbOeuvresEmpruntees%type;
     le_pseudo client.pseudo%type;
+    l_ido oeuvre.ido%type;
 begin
+	select ido 
+		into l_ido
+		from oeuvre 
+		where reference=la_reference;
     update panier
       set rendue = 1
-      where reference = la_reference
+      where ido = l_ido
         and ide = l_ide;
     select nbExemplaires
       into le_nbExemplaires
@@ -302,7 +307,7 @@ is
       select ide
         from emprunt
         where valide = 1
-          and sysdate > dateReservation+3;
+          and sysdate > dateReservation+3 and reglee = 0;
     l_ide emprunt.ide%type;
     l_ido oeuvre.ido%type;
     le_nbExemplaires oeuvre.nbExemplaires%type;
@@ -325,6 +330,8 @@ begin
       delete empruntBibliothecaire
         where ide = l_ide;
       delete panier
+        where ide = l_ide;
+      delete penalite
         where ide = l_ide;
       delete emprunt
         where ide = l_ide;

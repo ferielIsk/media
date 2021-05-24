@@ -50,7 +50,7 @@
 		$ordre = oci_parse($connexion, $txt);  
 		oci_bind_by_name($ordre, ":pseudo", $_REQUEST['pseudo_emprunt']);
         oci_bind_by_name($ordre, ":ide", $_REQUEST['ide']);
-        echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
+        echo "<div style='position:absolute; top: 30vh;left: 35%;font-size:32px; color: #588ebb; '>";
   		if (oci_execute($ordre))
   			echo " Successful !  </div>";
 		else 
@@ -78,7 +78,7 @@
       		oci_bind_by_name($ordre, ":ref", $_REQUEST['ref_retour']);
       		oci_bind_by_name($ordre, ":ide", $_REQUEST['ide_retour']);
       		
-  			echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
+  			echo "<div style='position:absolute; top: 30vh;left: 35%;font-size:32px; color: #588ebb; '>";
       		if (oci_execute($ordre))
       			echo " Successful !  </div>";
   			else 
@@ -104,9 +104,9 @@
       		$ordre = oci_parse($connexion, $texte); 
       		oci_bind_by_name($ordre, ":idp", $_REQUEST['idp']);
       		
-  			echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>";
+  			echo "<div style='position:absolute; top: 30vh;left: 35%;font-size:32px; color: #588ebb; '>";
       		if (oci_execute($ordre))
-      			echo " Penalty deleted !  </div>";
+      			echo " Successful !  </div>";
   			else 
   				echo " Error occured ! </div>";
       		oci_free_statement($ordre);
@@ -118,7 +118,7 @@
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$texte = "begin remetEnRayon ; end;";
   		$ordre = oci_parse($connexion, $texte);
-  		echo "<div style='position:absolute; top: 50vh;left: 35%;font-size:32px; color: #588ebb; '>"; 
+  		echo "<div style='position:absolute; top: 30vh;left: 35%;font-size:32px; color: #588ebb; '>"; 
   		if (oci_execute($ordre))
   			echo " Products concerned have been restored !  </div>";
   		else 
@@ -133,7 +133,7 @@
 		$connexion = oci_connect('c##lizri_a', 'lizri_a', 'dbinfo');
 		$texte = "begin creationEtMAJPenalites ; end;";
   		$ordre = oci_parse($connexion, $texte); 
-  		echo "<div style='position:absolute; top: 50vh;left: 40%;font-size:32px; color: #588ebb; '>";
+  		echo "<div style='position:absolute; top: 30vh;left: 40%;font-size:32px; color: #588ebb; '>";
   		if (oci_execute($ordre))
   			echo " Penalties updated successfully ! </div>";
   		else 
